@@ -12,8 +12,8 @@ import {
   Settings,
   Moon,
   LogOut,
-  ChevronRight,
-  Sparkles
+  Plus,
+  Activity
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import {
@@ -38,38 +38,38 @@ const navigationItems = [
     title: "Tableau de bord",
     url: "/",
     icon: Home,
-    gradient: "from-blue-500 to-cyan-500"
+    iconColor: "text-blue-600"
   },
   {
     title: "Rechercher médecin",
     url: "/search",
     icon: Search,
-    gradient: "from-emerald-500 to-teal-500"
+    iconColor: "text-emerald-600"
   },
   {
     title: "Mes rendez-vous",
     url: "/appointments",
     icon: Calendar,
-    gradient: "from-purple-500 to-pink-500"
+    iconColor: "text-purple-600"
   },
   {
     title: "Dossier médical",
     url: "/medical-file",
     icon: FileText,
-    gradient: "from-orange-500 to-red-500"
+    iconColor: "text-orange-600"
   },
   {
     title: "Urgences",
     url: "/emergency",
     icon: AlertTriangle,
-    gradient: "from-red-500 to-rose-500"
+    iconColor: "text-red-600"
   },
   {
     title: "Messages",
     url: "/messages",
     icon: MessageSquare,
     badge: 1,
-    gradient: "from-indigo-500 to-blue-500"
+    iconColor: "text-indigo-600"
   },
   {
     title: "Rappels",
@@ -77,13 +77,13 @@ const navigationItems = [
     icon: Bell,
     badge: 3,
     badgeVariant: "secondary" as const,
-    gradient: "from-amber-500 to-orange-500"
+    iconColor: "text-amber-600"
   },
   {
     title: "Mon profil",
     url: "/profile",
     icon: User,
-    gradient: "from-slate-500 to-gray-500"
+    iconColor: "text-slate-600"
   },
 ]
 
@@ -91,30 +91,30 @@ export function AppSidebar() {
   const location = useLocation()
 
   return (
-    <Sidebar className="border-r-0 shadow-xl bg-gradient-to-b from-sidebar to-sidebar/95">
-      <SidebarHeader className="border-b border-sidebar-border/50 bg-gradient-to-r from-sidebar to-sidebar/90">
-        <div className="flex items-center gap-3 px-3 py-4">
+    <Sidebar className="border-r bg-white/95 backdrop-blur-sm">
+      <SidebarHeader className="border-b border-border/50 bg-white/80">
+        <div className="flex items-center gap-4 px-6 py-5">
           <div className="relative">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-primary/90 to-primary/70 shadow-lg">
-              <Heart className="h-5 w-5 text-primary-foreground" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-lg ring-1 ring-primary/20">
+              <Heart className="h-6 w-6 text-primary-foreground" />
             </div>
-            <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-primary animate-pulse" />
+            <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-green-500 ring-2 ring-white shadow-sm"></div>
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Medi<span className="text-primary">Care</span>
-            </span>
-            <span className="text-xs text-muted-foreground">
-              Votre santé, notre priorité ✨
-            </span>
+            <h1 className="text-xl font-bold text-foreground">
+              MediCare
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Votre santé connectée
+            </p>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-3">
+      <SidebarContent className="px-4 py-6">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mb-2">
-            Navigation Principale
+          <SidebarGroupLabel className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3 px-2">
+            Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
@@ -123,32 +123,28 @@ export function AppSidebar() {
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild className={`
-                      relative overflow-hidden transition-all duration-200 hover:scale-[1.02]
+                      relative h-11 transition-all duration-200
                       ${isActive 
-                        ? 'bg-gradient-to-r from-primary/20 to-primary/10 text-primary shadow-md border-r-2 border-primary' 
-                        : 'hover:bg-muted/50'
+                        ? 'bg-primary/10 text-primary border-r-3 border-primary shadow-sm' 
+                        : 'hover:bg-muted/60 text-muted-foreground hover:text-foreground'
                       }
                     `}>
-                      <NavLink to={item.url} className="flex items-center gap-3 p-3 rounded-lg group">
+                      <NavLink to={item.url} className="flex items-center gap-3 px-3 py-2 rounded-xl group">
                         <div className={`
-                          w-8 h-8 rounded-lg bg-gradient-to-br ${item.gradient} 
-                          flex items-center justify-center shadow-sm
-                          ${isActive ? 'shadow-md scale-110' : 'group-hover:scale-105'}
-                          transition-transform duration-200
+                          flex items-center justify-center w-7 h-7 rounded-lg
+                          ${isActive ? 'bg-primary/20' : 'bg-muted/50 group-hover:bg-muted'}
+                          transition-colors duration-200
                         `}>
-                          <item.icon className="h-4 w-4 text-white" />
+                          <item.icon className={`h-4 w-4 ${isActive ? 'text-primary' : item.iconColor}`} />
                         </div>
-                        <span className={`font-medium ${isActive ? 'text-primary' : 'text-foreground'}`}>
+                        <span className={`font-medium text-sm ${isActive ? 'text-primary' : ''}`}>
                           {item.title}
                         </span>
-                        {isActive && (
-                          <ChevronRight className="h-4 w-4 text-primary ml-auto" />
-                        )}
                         {item.badge && (
                           <SidebarMenuBadge>
                             <Badge 
                               variant={item.badgeVariant || "destructive"} 
-                              className="ml-auto animate-bounce shadow-sm"
+                              className="ml-auto text-xs px-2 py-0.5"
                             >
                               {item.badge}
                             </Badge>
@@ -162,50 +158,80 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <Separator className="my-6 mx-2" />
+
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3 px-2">
+            Actions rapides
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-1">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="h-11 hover:bg-muted/60 text-muted-foreground hover:text-foreground">
+                  <Button variant="ghost" className="w-full justify-start px-3 py-2 rounded-xl">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-muted/50 group-hover:bg-muted transition-colors">
+                      <Plus className="h-4 w-4 text-emerald-600" />
+                    </div>
+                    <span className="font-medium text-sm">Nouveau RDV</span>
+                  </Button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="h-11 hover:bg-muted/60 text-muted-foreground hover:text-foreground">
+                  <Button variant="ghost" className="w-full justify-start px-3 py-2 rounded-xl">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-muted/50 group-hover:bg-muted transition-colors">
+                      <Activity className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <span className="font-medium text-sm">Suivi santé</span>
+                  </Button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border/50 p-3 bg-gradient-to-r from-sidebar to-sidebar/90">
+      <SidebarFooter className="border-t border-border/50 p-4 bg-white/80">
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 mb-3">
               <div className="relative">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground font-semibold shadow-lg">
-                  PU
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-sm">
+                  JD
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
               </div>
               <div className="flex flex-col flex-1 min-w-0">
                 <span className="text-sm font-semibold text-foreground truncate">
-                  Patient User
+                  John Doe
                 </span>
-                <span className="text-xs text-muted-foreground">En ligne • Premium</span>
+                <span className="text-xs text-muted-foreground">Patient Premium</span>
               </div>
             </div>
           </SidebarMenuItem>
           
-          <Separator className="my-2 bg-sidebar-border/30" />
-          
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Button variant="ghost" className="w-full justify-start hover:bg-muted/50 transition-colors">
+            <SidebarMenuButton asChild className="h-10 hover:bg-muted/60 text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" className="w-full justify-start px-3 py-2 rounded-xl">
                 <Settings className="h-4 w-4" />
-                <span>Paramètres</span>
+                <span className="text-sm">Paramètres</span>
               </Button>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Button variant="ghost" className="w-full justify-start hover:bg-muted/50 transition-colors">
+            <SidebarMenuButton asChild className="h-10 hover:bg-muted/60 text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" className="w-full justify-start px-3 py-2 rounded-xl">
                 <Moon className="h-4 w-4" />
-                <span>Mode Sombre</span>
+                <span className="text-sm">Mode sombre</span>
               </Button>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors">
+            <SidebarMenuButton asChild className="h-10 hover:bg-destructive/10 text-destructive hover:text-destructive">
+              <Button variant="ghost" className="w-full justify-start px-3 py-2 rounded-xl">
                 <LogOut className="h-4 w-4" />
-                <span>Déconnexion</span>
+                <span className="text-sm">Déconnexion</span>
               </Button>
             </SidebarMenuButton>
           </SidebarMenuItem>
