@@ -6,12 +6,14 @@ import { Header } from "@/components/Header"
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-muted/20 to-background">
         <AppSidebar />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-screen">
           <Header />
-          <main className="flex-1 overflow-auto p-4 sm:p-6 bg-muted/10">
-            {children}
+          <main className="flex-1 overflow-auto p-3 sm:p-4 lg:p-6">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
           </main>
         </div>
       </div>
