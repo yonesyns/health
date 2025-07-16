@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Appointments from "./pages/Appointments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,7 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/search" element={<div className="p-6"><h1 className="text-2xl font-bold">Rechercher médecin</h1><p className="text-muted-foreground">Page en construction...</p></div>} />
-            <Route path="/appointments" element={<div className="p-6"><h1 className="text-2xl font-bold">Mes rendez-vous</h1><p className="text-muted-foreground">Page en construction...</p></div>} />
+            <Route path="/appointments" element={<Appointments />} />
             <Route path="/medical-file" element={<div className="p-6"><h1 className="text-2xl font-bold">Dossier médical</h1><p className="text-muted-foreground">Page en construction...</p></div>} />
             <Route path="/emergency" element={<div className="p-6"><h1 className="text-2xl font-bold">Urgences</h1><p className="text-muted-foreground">Page en construction...</p></div>} />
             <Route path="/messages" element={<div className="p-6"><h1 className="text-2xl font-bold">Messages</h1><p className="text-muted-foreground">Page en construction...</p></div>} />
