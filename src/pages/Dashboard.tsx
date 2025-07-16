@@ -1,5 +1,4 @@
-
-import { Activity, Calendar, MessageSquare, Users, TrendingUp, Clock, Heart, Zap } from "lucide-react"
+import { Activity, Calendar, MessageSquare, Users, TrendingUp, Clock, Heart, Zap, Bell } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
