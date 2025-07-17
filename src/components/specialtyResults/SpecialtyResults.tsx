@@ -13,6 +13,8 @@ import {
   Grid,
   Video,
   Search,
+  Clock,
+  User,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -21,7 +23,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 // Mock doctors data
 const mockDoctors = [
@@ -111,13 +112,6 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
   const [sortBy, setSortBy] = useState("availability")
   const [showAllSlots, setShowAllSlots] = useState<Record<number, boolean>>({})
   const [currentWeekOffset, setCurrentWeekOffset] = useState<Record<number, number>>({})
-  const [appointmentModal, setAppointmentModal] = useState<{
-    show: boolean
-    doctor: Doctor | null
-  }>({
-    show: false,
-    doctor: null,
-  })
   const [filters, setFilters] = useState<Filters>({
     languages: [],
     sectors: [],
@@ -344,22 +338,11 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
     }
   }
 
-  const openAppointmentModal = (doctor: Doctor) => {
-    // Instead of showing modal, go directly to booking
-    onSelectDoctor(doctor.id, doctor.name, "booking")
-  }
-
-  const openFullBooking = () => {
-    if (appointmentModal.doctor) {
-      setAppointmentModal({ show: false, doctor: null })
-      onSelectDoctor(appointmentModal.doctor.id, appointmentModal.doctor.name, "booking")
-    }
-  }
-
   const bookSlot = (doctor: Doctor, slot: any) => {
     if (typeof slot === "string" && slot === "—") return
     console.log(`Booking slot for doctor ${doctor.name}`, slot)
-    openAppointmentModal(doctor)
+    // Open AppointmentBooking instead of modal
+    onSelectDoctor(doctor.id, doctor.name, "booking")
   }
 
   const handleLanguageFilter = (language: string, checked: boolean) => {
@@ -377,20 +360,20 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Header Section */}
-      <div className="bg-white border-b border-gray-200 py-6">
-        <div className="max-w-7xl mx-auto px-6">
-          <Button variant="ghost" onClick={onGoBack} className="mb-6 text-blue-600 p-0">
+    <div className="bg-background min-h-screen">
+      {/* Header Section - Improved */}
+      <div className="bg-card border-b shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <Button variant="ghost" onClick={onGoBack} className="mb-4 hover:bg-muted">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Retour à la recherche
           </Button>
           <div className="flex justify-between items-center gap-8">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 {filteredDoctors.length} {specialty.toLowerCase()}s trouvés
               </h1>
-              <p className="text-gray-600">Prenez rendez-vous en ligne{location && ` à ${location}`}</p>
+              <p className="text-muted-foreground">Prenez rendez-vous en ligne{location && ` à ${location}`}</p>
             </div>
             <div className="flex gap-2">
               <Button
@@ -416,13 +399,13 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-        {/* Sidebar Filters */}
+        {/* Sidebar Filters - Improved */}
         <div className="lg:sticky lg:top-8">
-          <Card>
-            <CardHeader>
+          <Card className="shadow-sm">
+            <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Filtres</h3>
-                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                <Button variant="ghost" size="sm" onClick={clearFilters} className="text-muted-foreground hover:text-foreground">
                   Effacer
                 </Button>
               </div>
@@ -430,7 +413,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
             <CardContent className="space-y-6">
               {/* Quick Filters */}
               <div>
-                <h4 className="font-semibold mb-3">Disponibilité</h4>
+                <h4 className="font-medium mb-3 text-foreground">Disponibilité</h4>
                 <div className="space-y-2">
                   <Button
                     variant={quickFilter === "today" ? "default" : "outline"}
@@ -438,6 +421,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                     size="sm"
                     className="w-full justify-start"
                   >
+                    <Clock className="mr-2 h-4 w-4" />
                     Aujourd'hui
                   </Button>
                   <Button
@@ -446,6 +430,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                     size="sm"
                     className="w-full justify-start"
                   >
+                    <Calendar className="mr-2 h-4 w-4" />
                     Cette semaine
                   </Button>
                   <Button
@@ -454,6 +439,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                     size="sm"
                     className="w-full justify-start"
                   >
+                    <Video className="mr-2 h-4 w-4" />
                     Téléconsultation
                   </Button>
                 </div>
@@ -461,9 +447,9 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
 
               {/* Sort Options */}
               <div>
-                <h4 className="font-semibold mb-3">Trier par</h4>
+                <h4 className="font-medium mb-3 text-foreground">Trier par</h4>
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Choisir un tri" />
                   </SelectTrigger>
                   <SelectContent>
@@ -478,15 +464,15 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
 
               {/* Language Filter */}
               <div>
-                <h4 className="font-semibold mb-3">Langues</h4>
-                <div className="space-y-2">
+                <h4 className="font-medium mb-3 text-foreground">Langues</h4>
+                <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="lang-fr"
                       checked={filters.languages.includes("fr")}
                       onCheckedChange={(checked) => handleLanguageFilter("fr", checked as boolean)}
                     />
-                    <label htmlFor="lang-fr" className="text-sm">
+                    <label htmlFor="lang-fr" className="text-sm text-foreground">
                       Français
                     </label>
                   </div>
@@ -496,7 +482,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                       checked={filters.languages.includes("en")}
                       onCheckedChange={(checked) => handleLanguageFilter("en", checked as boolean)}
                     />
-                    <label htmlFor="lang-en" className="text-sm">
+                    <label htmlFor="lang-en" className="text-sm text-foreground">
                       Anglais
                     </label>
                   </div>
@@ -506,7 +492,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                       checked={filters.languages.includes("ar")}
                       onCheckedChange={(checked) => handleLanguageFilter("ar", checked as boolean)}
                     />
-                    <label htmlFor="lang-ar" className="text-sm">
+                    <label htmlFor="lang-ar" className="text-sm text-foreground">
                       Arabe
                     </label>
                   </div>
@@ -515,15 +501,15 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
 
               {/* Sector Filter */}
               <div>
-                <h4 className="font-semibold mb-3">Secteur</h4>
-                <div className="space-y-2">
+                <h4 className="font-medium mb-3 text-foreground">Secteur</h4>
+                <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="sector-1"
                       checked={filters.sectors.includes("1")}
                       onCheckedChange={(checked) => handleSectorFilter("1", checked as boolean)}
                     />
-                    <label htmlFor="sector-1" className="text-sm">
+                    <label htmlFor="sector-1" className="text-sm text-foreground">
                       Secteur 1
                     </label>
                   </div>
@@ -533,7 +519,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                       checked={filters.sectors.includes("2")}
                       onCheckedChange={(checked) => handleSectorFilter("2", checked as boolean)}
                     />
-                    <label htmlFor="sector-2" className="text-sm">
+                    <label htmlFor="sector-2" className="text-sm text-foreground">
                       Secteur 2
                     </label>
                   </div>
@@ -547,28 +533,28 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
         <div className="min-h-[600px]">
           {filteredDoctors.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <Search className="w-8 h-8 text-gray-400" />
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                <Search className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun médecin trouvé</h3>
-              <p className="text-gray-500 mb-4">Essayez de modifier vos filtres pour voir plus de résultats</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Aucun médecin trouvé</h3>
+              <p className="text-muted-foreground mb-4">Essayez de modifier vos filtres pour voir plus de résultats</p>
               <Button variant="outline" onClick={clearFilters}>
                 Effacer tous les filtres
               </Button>
             </div>
           ) : viewMode === "list" ? (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {filteredDoctors.map((doctor) => (
-                <Card key={doctor.id} className="hover:shadow-md transition-all duration-200 border-0 shadow-sm">
+                <Card key={doctor.id} className="hover:shadow-lg transition-all duration-200 border shadow-sm">
                   <CardContent className="p-0">
-                    <div className="grid grid-cols-1 xl:grid-cols-[300px_1fr_200px] gap-0">
-                      {/* Doctor Info Section - Fixed width and better spacing */}
-                      <div className="p-6 border-r border-gray-100">
-                        <div className="flex gap-4">
+                    <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-0">
+                      {/* Doctor Info Section */}
+                      <div className="p-6 border-r border-border">
+                        <div className="flex gap-4 mb-4">
                           <div className="relative flex-shrink-0">
-                            <Avatar className="h-16 w-16 border-2 border-white shadow-sm">
+                            <Avatar className="h-20 w-20 border-2 border-border shadow-sm">
                               <AvatarImage src={doctor.image || "/placeholder.svg"} alt={doctor.name} />
-                              <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                              <AvatarFallback className="bg-muted text-muted-foreground font-semibold text-lg">
                                 {doctor.name
                                   .split(" ")
                                   .map((n) => n[0])
@@ -590,23 +576,29 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3
-                              className="text-lg font-semibold text-blue-600 cursor-pointer hover:text-blue-700 mb-1 truncate"
+                              className="text-xl font-semibold text-primary cursor-pointer hover:text-primary/80 mb-2 truncate"
                               onClick={() => onSelectDoctor(doctor.id)}
                             >
                               {doctor.name}
                             </h3>
-                            <p className="text-gray-900 font-medium mb-3">{doctor.specialty}</p>
+                            <p className="text-foreground font-medium mb-3">{doctor.specialty}</p>
                             <div className="space-y-2">
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <MapPin className="h-4 w-4 flex-shrink-0" />
                                 <span className="truncate">{doctor.location}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
-                                <CheckCircle className="h-4 w-4 flex-shrink-0 text-green-500" />
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <CheckCircle className="h-4 w-4 flex-shrink-0 text-emerald-500" />
                                 <span>Secteur {doctor.sector}</span>
+                                {doctor.teleconsultation && (
+                                  <Badge variant="outline" className="ml-2">
+                                    <Video className="h-3 w-3 mr-1" />
+                                    Téléconsultation
+                                  </Badge>
+                                )}
                               </div>
                               {doctor.rating && (
-                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                   <Star className="h-4 w-4 flex-shrink-0 fill-yellow-400 text-yellow-400" />
                                   <span>
                                     {doctor.rating}/5 ({doctor.reviewCount} avis)
@@ -618,11 +610,11 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                         </div>
                       </div>
 
-                      {/* Availability Section - Improved layout */}
-                      <div className="p-6 bg-gray-50/50">
+                      {/* Availability Section */}
+                      <div className="p-6 bg-muted/30">
                         <div className="flex justify-between items-center mb-4">
-                          <h4 className="font-semibold text-gray-900">Disponibilités</h4>
-                          <div className="flex items-center gap-1 bg-white rounded-lg border px-2 py-1">
+                          <h4 className="font-semibold text-foreground">Créneaux disponibles</h4>
+                          <div className="flex items-center gap-1 bg-card rounded-lg border px-2 py-1 shadow-sm">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -632,7 +624,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                             >
                               <ChevronLeft className="h-4 w-4" />
                             </Button>
-                            <span className="text-sm text-gray-600 min-w-[100px] text-center font-medium">
+                            <span className="text-sm text-muted-foreground min-w-[100px] text-center font-medium">
                               {getWeekRange(doctor.id)}
                             </span>
                             <Button
@@ -647,15 +639,15 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                           </div>
                         </div>
 
-                        {/* Appointment Grid - Better spacing and styling */}
-                        <div className="grid grid-cols-7 gap-2 mb-4">
+                        {/* Appointment Grid */}
+                        <div className="grid grid-cols-7 gap-3 mb-4">
                           {getWeekDays(doctor.id).map((day) => (
-                            <div key={day.key} className="flex flex-col gap-1">
-                              <div className="text-center p-2 bg-white rounded-lg border">
-                                <div className="text-xs font-semibold text-gray-700">{day.name}</div>
-                                <div className="text-xs text-gray-500 mt-0.5">{day.date}</div>
+                            <div key={day.key} className="flex flex-col gap-2">
+                              <div className="text-center p-2 bg-card rounded-lg border shadow-sm">
+                                <div className="text-xs font-semibold text-foreground">{day.name}</div>
+                                <div className="text-xs text-muted-foreground mt-0.5">{day.date}</div>
                               </div>
-                              <div className="flex flex-col gap-1 min-h-[100px]">
+                              <div className="flex flex-col gap-1 min-h-[120px]">
                                 {getAppointmentAvailability(doctor).type === "current_week" ? (
                                   <>
                                     {getDaySlots(doctor, day.key, showAllSlots[doctor.id]).map((slot, index) => (
@@ -665,10 +657,10 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                                         size="sm"
                                         disabled={slot === "—"}
                                         onClick={() => bookSlot(doctor, slot)}
-                                        className={`text-xs h-7 ${
+                                        className={`text-xs h-8 transition-all ${
                                           slot === "—"
-                                            ? "text-gray-400 cursor-not-allowed bg-gray-50"
-                                            : "bg-blue-600 hover:bg-blue-700 text-white"
+                                            ? "text-muted-foreground cursor-not-allowed bg-muted/50"
+                                            : "bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm hover:shadow-md"
                                         }`}
                                       >
                                         {slot}
@@ -679,7 +671,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => toggleDaySlots(doctor.id)}
-                                        className="text-xs h-6 text-blue-600 hover:text-blue-700"
+                                        className="text-xs h-6 text-primary hover:text-primary/80"
                                       >
                                         {showAllSlots[doctor.id] ? "Moins" : "Plus"}
                                       </Button>
@@ -689,7 +681,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                                   Array.from({ length: 3 }).map((_, index) => (
                                     <div
                                       key={index}
-                                      className="text-xs text-center text-gray-300 py-1.5 bg-gray-50 rounded"
+                                      className="text-xs text-center text-muted-foreground py-2 bg-muted/50 rounded"
                                     >
                                       —
                                     </div>
@@ -700,19 +692,19 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                           ))}
                         </div>
 
-                        {/* Special Messages - Improved styling */}
+                        {/* Special Messages */}
                         <div className="space-y-2">
                           {getAppointmentAvailability(doctor).type === "future_date" && (
-                            <Alert className="border-blue-200 bg-blue-50">
+                            <Alert className="border-primary/20 bg-primary/5">
                               <AlertDescription className="flex items-center justify-between">
-                                <span className="text-blue-800">
+                                <span className="text-primary">
                                   Prochain RDV le {getAppointmentAvailability(doctor).date}
                                 </span>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => goToFutureDate(doctor)}
-                                  className="text-blue-600 hover:text-blue-700 hover:bg-blue-100"
+                                  className="text-primary hover:text-primary/80 hover:bg-primary/10"
                                 >
                                   Voir
                                 </Button>
@@ -727,35 +719,13 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                             </Alert>
                           )}
                           {getAppointmentAvailability(doctor).type === "no_online" && (
-                            <Alert className="border-gray-200 bg-gray-50">
-                              <AlertDescription className="text-gray-700">
+                            <Alert className="border-border bg-muted/50">
+                              <AlertDescription className="text-muted-foreground">
                                 Aucune disponibilité en ligne
                               </AlertDescription>
                             </Alert>
                           )}
                         </div>
-                      </div>
-
-                      {/* Action Buttons - Better positioning */}
-                      <div className="p-6 flex flex-col justify-center border-l border-gray-100">
-                        <Button
-                          onClick={() => openAppointmentModal(doctor)}
-                          size="lg"
-                          className="w-full bg-blue-600 hover:bg-blue-700"
-                        >
-                          <Calendar className="mr-2 h-4 w-4" />
-                          Prendre RDV
-                        </Button>
-                        {doctor.teleconsultation && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full mt-2 text-blue-600 border-blue-200 hover:bg-blue-50 bg-transparent"
-                          >
-                            <Video className="mr-2 h-3 w-3" />
-                            Vidéo
-                          </Button>
-                        )}
                       </div>
                     </div>
                   </CardContent>
@@ -763,16 +733,16 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
               ))}
             </div>
           ) : (
-            // Grid view with improved cards
+            // Grid view - Simplified
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredDoctors.map((doctor) => (
-                <Card key={doctor.id} className="hover:shadow-md transition-all duration-200 border-0 shadow-sm">
+                <Card key={doctor.id} className="hover:shadow-lg transition-all duration-200 border shadow-sm">
                   <CardContent className="p-6">
                     <div className="flex flex-col gap-4 h-full">
                       <div className="flex justify-between items-start">
-                        <Avatar className="h-14 w-14 border-2 border-white shadow-sm">
+                        <Avatar className="h-16 w-16 border-2 border-border shadow-sm">
                           <AvatarImage src={doctor.image || "/placeholder.svg"} alt={doctor.name} />
-                          <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                          <AvatarFallback className="bg-muted text-muted-foreground font-semibold">
                             {doctor.name
                               .split(" ")
                               .map((n) => n[0])
@@ -794,15 +764,15 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                       </div>
                       <div className="text-center flex-1">
                         <h3
-                          className="text-lg font-semibold text-blue-600 cursor-pointer hover:text-blue-700 mb-2"
+                          className="text-lg font-semibold text-primary cursor-pointer hover:text-primary/80 mb-2"
                           onClick={() => onSelectDoctor(doctor.id)}
                         >
                           {doctor.name}
                         </h3>
-                        <p className="text-gray-900 font-medium mb-1">{doctor.specialty}</p>
-                        <p className="text-sm text-gray-600 mb-3">{doctor.location}</p>
+                        <p className="text-foreground font-medium mb-1">{doctor.specialty}</p>
+                        <p className="text-sm text-muted-foreground mb-3">{doctor.location}</p>
                         {doctor.rating && (
-                          <div className="flex items-center justify-center gap-1 text-sm text-gray-600 mb-3">
+                          <div className="flex items-center justify-center gap-1 text-sm text-muted-foreground mb-3">
                             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                             <span>
                               {doctor.rating}/5 ({doctor.reviewCount})
@@ -810,8 +780,8 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                           </div>
                         )}
                       </div>
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <h4 className="text-sm font-semibold mb-2 text-gray-900">Prochains créneaux</h4>
+                      <div className="bg-muted/50 rounded-lg p-3">
+                        <h4 className="text-sm font-semibold mb-2 text-foreground">Prochains créneaux</h4>
                         <div className="space-y-1">
                           {getNextSlots(doctor).map((slot) => (
                             <Button
@@ -819,20 +789,13 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                               variant="outline"
                               size="sm"
                               onClick={() => bookSlot(doctor, slot)}
-                              className="w-full text-xs justify-start bg-white hover:bg-blue-50 border-gray-200"
+                              className="w-full text-xs justify-start bg-card hover:bg-muted border-border"
                             >
                               {slot.time}
                             </Button>
                           ))}
                         </div>
                       </div>
-                      <Button
-                        onClick={() => openAppointmentModal(doctor)}
-                        className="w-full bg-blue-600 hover:bg-blue-700"
-                      >
-                        <Calendar className="mr-2 h-4 w-4" />
-                        Prendre RDV
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -841,49 +804,6 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
           )}
         </div>
       </div>
-
-      {/* Appointment Modal */}
-      <Dialog open={appointmentModal.show} onOpenChange={(open) => setAppointmentModal({ show: open, doctor: null })}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Rendez-vous avec {appointmentModal.doctor?.name}</DialogTitle>
-          </DialogHeader>
-          {appointmentModal.doctor && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage
-                    src={appointmentModal.doctor.image || "/placeholder.svg"}
-                    alt={appointmentModal.doctor.name}
-                  />
-                  <AvatarFallback>
-                    {appointmentModal.doctor.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold">{appointmentModal.doctor.name}</h3>
-                  <p className="text-gray-600">{appointmentModal.doctor.specialty}</p>
-                  <p className="text-sm text-gray-500">{appointmentModal.doctor.location}</p>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <Button onClick={openFullBooking} size="lg" className="w-full">
-                  Prendre rendez-vous complet
-                </Button>
-                {appointmentModal.doctor.teleconsultation && (
-                  <Button variant="outline" size="lg" className="w-full bg-transparent">
-                    <Video className="mr-2 h-4 w-4" />
-                    Consultation vidéo
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
