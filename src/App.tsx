@@ -7,8 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
 import Appointments from "./pages/Appointments";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
