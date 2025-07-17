@@ -10,22 +10,12 @@ import {
   Settings,
   LogOut,
   Menu,
-  ChevronLeft,
-  Activity
+  X,
+  Activity,
+  ChevronRight
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -80,62 +70,100 @@ const navigationItems = [
   },
 ]
 
+const bottomItems = [
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+  },
+  {
+    title: "Logout",
+    url: "/logout",
+    icon: LogOut,
+  },
+]
+
 export function AppSidebar() {
   const location = useLocation()
-  const { state, toggleSidebar } = useSidebar()
-  const isCollapsed = state === "collapsed"
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [location.pathname])
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   const NavItem = ({ item, isActive }: { item: any, isActive: boolean }) => {
     const ItemContent = (
-      <SidebarMenuItem>
-        <SidebarMenuButton 
-          asChild 
-          className={`
-            relative h-11 rounded-lg transition-all duration-200 border-0
-            ${isCollapsed ? 'w-11 justify-center' : 'w-full'}
-            ${isActive 
-              ? 'bg-sidebar-primary text-sidebar-primary-foreground' 
-              : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-            }
-          `}
-        >
-          <NavLink to={item.url} className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-3'}`}>
-            <item.icon className="h-5 w-5" />
-            
-            {!isCollapsed && (
-              <>
-                <span className="text-sm font-medium">
-                  {item.title}
-                </span>
-                {item.badge && (
-                  <span className={`
-                    ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-xs font-medium
-                    ${isActive ? 'bg-sidebar-primary-foreground text-sidebar-primary' : 'bg-sidebar-primary text-sidebar-primary-foreground'}
-                  `}>
-                    {item.badge}
-                  </span>
-                )}
-              </>
+      <NavLink
+        to={item.url}
+        className={`
+          group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
+          ${isCollapsed ? 'justify-center px-2' : 'justify-start'}
+          ${isActive 
+            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25' 
+            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+          }
+        `}
+      >
+        <item.icon className={`flex-shrink-0 ${isCollapsed ? 'h-5 w-5' : 'h-5 w-5'}`} />
+        
+        {!isCollapsed && (
+          <>
+            <span className="text-sm font-medium truncate">
+              {item.title}
+            </span>
+            {item.badge && (
+              <span className={`
+                ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-medium
+                ${isActive ? 'bg-white text-blue-600' : 'bg-blue-600 text-white'}
+              `}>
+                {item.badge}
+              </span>
             )}
-            
-            {isCollapsed && item.badge && (
-              <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-sidebar-primary" />
-            )}
-          </NavLink>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+          </>
+        )}
+        
+        {isCollapsed && item.badge && (
+          <div className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
+        )}
+      </NavLink>
     )
 
     if (isCollapsed) {
       return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            {ItemContent}
-          </TooltipTrigger>
-          <TooltipContent side="right" className="border-0 bg-sidebar-primary text-sidebar-primary-foreground">
-            <p className="font-medium">{item.title}</p>
-          </TooltipContent>
-        </Tooltip>
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative">
+                {ItemContent}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="bg-gray-900 text-white border-0">
+              <p className="font-medium">{item.title}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )
     }
 
@@ -143,99 +171,113 @@ export function AppSidebar() {
   }
 
   return (
-    <TooltipProvider delayDuration={0}>
-      <Sidebar 
-        collapsible="icon"
-        className="border-0"
-      >
-        <SidebarHeader className="border-0">
-          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} h-16 px-3`}>
-            {!isCollapsed ? (
-              <>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary">
-                    <Activity className="h-5 w-5 text-sidebar-primary-foreground" />
-                  </div>
-                  <span className="text-lg font-semibold text-sidebar-foreground">
-                    MediCare
-                  </span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-9 w-9 text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
-                  onClick={toggleSidebar}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-              </>
-            ) : (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
-                onClick={toggleSidebar}
-              >
-                <Menu className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </SidebarHeader>
+    <>
+      {/* Mobile Menu Button */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleMobileMenu}
+          className="h-10 w-10 bg-white shadow-lg border-gray-200"
+        >
+          {isMobileMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </Button>
+      </div>
 
-        <SidebarContent className="border-0 px-3">
-          <SidebarGroup className="space-y-1">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navigationItems.map((item) => (
-                  <NavItem 
-                    key={item.title} 
-                    item={item} 
-                    isActive={location.pathname === item.url}
-                  />
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity"
+          onClick={toggleMobileMenu}
+        />
+      )}
 
-          <div className="flex-1" />
-
-          {/* Settings & Logout */}
-          <SidebarGroup className="space-y-1 pb-4">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <NavItem 
-                  item={{ title: "Settings", url: "/settings", icon: Settings }}
-                  isActive={location.pathname === "/settings"}
-                />
-                <NavItem 
-                  item={{ title: "Logout", url: "/logout", icon: LogOut }}
-                  isActive={false}
-                />
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter className="border-0 p-3">
-          <div className={`
-            flex items-center gap-3 rounded-lg bg-card p-3 border
-            ${isCollapsed ? 'justify-center' : ''}
-          `}>
-            <Avatar className={`${isCollapsed ? 'h-8 w-8' : 'h-9 w-9'}`}>
-              <AvatarImage src="/avatar.jpg" />
-              <AvatarFallback className="bg-muted text-muted-foreground text-sm">
-                JD
-              </AvatarFallback>
-            </Avatar>
-            {!isCollapsed && (
-              <div className="flex-1">
-                <p className="text-sm font-medium text-card-foreground">John Doe</p>
-                <p className="text-xs text-muted-foreground">john@medicare.com</p>
+      {/* Sidebar */}
+      <div className={`
+        fixed top-0 left-0 h-full bg-white border-r border-gray-200 shadow-xl z-50 transition-all duration-300
+        ${isCollapsed ? 'w-16' : 'w-64'}
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:translate-x-0 lg:static lg:shadow-none
+      `}>
+        {/* Header */}
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-100">
+          {!isCollapsed && (
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+                <Activity className="h-5 w-5 text-white" />
               </div>
-            )}
+              <span className="text-lg font-bold text-gray-900">
+                MediCare
+              </span>
+            </div>
+          )}
+          
+          {/* Desktop Collapse Button */}
+          <div className="hidden lg:block">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleCollapse}
+              className="h-8 w-8 text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+            >
+              <ChevronRight className={`h-4 w-4 transition-transform ${isCollapsed ? 'rotate-0' : 'rotate-180'}`} />
+            </Button>
           </div>
-        </SidebarFooter>
-      </Sidebar>
-    </TooltipProvider>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex flex-col h-[calc(100vh-4rem)]">
+          {/* Main Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            {navigationItems.map((item) => (
+              <NavItem 
+                key={item.title} 
+                item={item} 
+                isActive={location.pathname === item.url}
+              />
+            ))}
+          </nav>
+
+          {/* Bottom Navigation */}
+          <div className="px-4 py-4 border-t border-gray-100 space-y-2">
+            {bottomItems.map((item) => (
+              <NavItem 
+                key={item.title} 
+                item={item} 
+                isActive={location.pathname === item.url}
+              />
+            ))}
+          </div>
+
+          {/* User Profile */}
+          <div className="px-4 py-4 border-t border-gray-100">
+            <div className={`
+              flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200
+              ${isCollapsed ? 'justify-center' : ''}
+            `}>
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="/avatar.jpg" />
+                <AvatarFallback className="bg-blue-600 text-white text-sm font-medium">
+                  JD
+                </AvatarFallback>
+              </Avatar>
+              {!isCollapsed && (
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
+                  <p className="text-xs text-gray-500 truncate">john@medicare.com</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer for desktop */}
+      {/* <div className={`hidden lg:block flex-shrink-0 transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'}`} /> */}
+    </>
   )
 }

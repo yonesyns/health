@@ -412,7 +412,7 @@ export function SearchDialog({ isOpen, onClose, onSearch }: SearchDialogProps) {
                 <Button
                   onClick={performSearch}
                   disabled={!searchQuery.trim()}
-                  className="px-6 py-3 flex items-center gap-2 font-semibold"
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-s"
                 >
                   <span>Rechercher</span>
                   <ArrowRight className="w-4 h-4" />
