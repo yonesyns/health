@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from "react"
 import {
     ArrowLeft,
     Star,
@@ -98,42 +98,51 @@ const doctorData = {
 }
 
 interface DoctorProfileProps {
-    doctorId: number
-    onBack: () => void
-    onAppointmentBooking: () => void
-    isInDialog?: boolean
+  doctorId: number
+  onGoBack: () => void
 }
 
-export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isInDialog = false }: DoctorProfileProps) {
-    const [activeTab, setActiveTab] = useState('essential')
-    const [showAppointmentBooking, setShowAppointmentBooking] = useState(false)
-    const doctor = doctorData[doctorId] || doctorData[1]
+export function DoctorProfile({ doctorId, onGoBack }: DoctorProfileProps) {
+  const doctor = {
+    id: 1,
+    name: "Dr. Isabelle Boublil",
+    specialty: "Médecin généraliste",
+    location: "Paris, France",
+    address: "123 Rue de la Paix, 75001 Paris",
+    phone: "+33 1 23 45 67 89",
+    website: "https://www.example.com",
+    languages: ["Français", "Anglais"],
+    availability: "Disponible sur rendez-vous",
+    rating: 4.8,
+    reviews: 250,
+    bio:
+      "Le Dr. Isabelle Boublil est une médecin généraliste expérimentée avec plus de 15 ans de pratique. Elle est passionnée par la fourniture de soins de santé de qualité à ses patients.",
+    services: [
+      "Consultations de médecine générale",
+      "Vaccinations",
+      "Bilans de santé",
+      "Suivi des maladies chroniques",
+    ],
+    teleconsultation: true,
+  }
 
-    const handleAppointmentBooking = () => {
-        setShowAppointmentBooking(true)
-        if (onAppointmentBooking) {
-            onAppointmentBooking()
-        }
-    }
-
-    const handleBackToProfile = () => {
-        setShowAppointmentBooking(false)
-    }
-
-    const handleCloseAppointmentBooking = () => {
-        setShowAppointmentBooking(false)
-    }
-
-    if (showAppointmentBooking) {
-        return (
-            <AppointmentBooking
-                doctorName={doctor.name}
-                isInDialog={isInDialog}
-                onGoBack={handleBackToProfile}
-                onClose={handleCloseAppointmentBooking}
-            />
-        )
-    }
+  const StatCard: React.FC<{
+    icon: React.ReactNode
+    label: string
+    value: string | number
+    description?: string
+    children?: React.ReactNode
+  }> = ({ icon, label, value, description, children }) => (
+    <Card className="p-4">
+      <div className="flex items-center gap-3 mb-2">
+        {icon}
+        <span className="text-sm font-medium text-muted-foreground">{label}</span>
+      </div>
+      <div className="text-2xl font-bold mb-1">{value}</div>
+      {description && <p className="text-sm text-muted-foreground">{description}</p>}
+      {children}
+    </Card>
+  )
 
     return (
         <div className={`${isInDialog ? '' : 'bg-gray-50 min-h-screen'}`}>
