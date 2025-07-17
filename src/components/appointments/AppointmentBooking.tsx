@@ -1,4 +1,3 @@
-
 "use client"
 
 import type React from "react"
@@ -101,17 +100,19 @@ const StepCard: React.FC<{
   children: React.ReactNode
 }> = ({ stepNumber, title, isActive, isCompleted, children }) => {
   return (
-    <Card className={`transition-all duration-200 ${isActive ? 'ring-2 ring-primary/20 shadow-lg' : 'shadow-sm hover:shadow-md'}`}>
+    <Card className={`transition-all duration-200 border-gray-200 ${
+      isActive ? 'shadow-md' : 'shadow-sm hover:shadow-md'
+    }`}>
       <CardContent className="p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-            isCompleted ? 'bg-green-100 text-green-700' : 
-            isActive ? 'bg-primary text-primary-foreground' : 
-            'bg-muted text-muted-foreground'
+            isCompleted ? 'bg-gray-900 text-white' : 
+            isActive ? 'bg-gray-900 text-white' : 
+            'bg-gray-100 text-gray-600'
           }`}>
             {isCompleted ? <Check className="w-4 h-4" /> : stepNumber}
           </div>
-          <h3 className={`text-lg font-semibold ${isActive ? 'text-primary' : 'text-foreground'}`}>
+          <h3 className={`text-lg font-semibold ${isActive ? 'text-gray-900' : 'text-gray-900'}`}>
             {title}
           </h3>
         </div>
@@ -133,30 +134,30 @@ const OptionCard: React.FC<{
   return (
     <div
       onClick={disabled ? undefined : onChange}
-      className={`p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-        disabled ? 'opacity-50 cursor-not-allowed bg-muted/30' :
-        checked ? 'border-primary bg-primary/5 shadow-md' : 
-        'border-border hover:border-primary/50 hover:bg-accent/50'
+      className={`p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
+        disabled ? 'opacity-50 cursor-not-allowed bg-gray-50' :
+        checked ? 'border-gray-900 bg-gray-50 shadow-sm' : 
+        'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
       }`}
     >
       <div className="flex items-start gap-3">
         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${
-          checked ? 'border-primary bg-primary' : 'border-muted-foreground'
+          checked ? 'border-gray-900 bg-gray-900' : 'border-gray-400'
         }`}>
           {checked && <div className="w-2 h-2 bg-white rounded-full" />}
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             {icon}
-            <span className="font-medium text-foreground">{title}</span>
+            <span className="font-medium text-gray-900">{title}</span>
             {badge && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge className="text-xs bg-gray-100 text-gray-700 border-gray-200">
                 {badge}
               </Badge>
             )}
           </div>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-gray-600">{description}</p>
           )}
         </div>
       </div>
@@ -231,66 +232,66 @@ export function AppointmentBooking({
 
   if (isConfirmed) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gray-50">
         <div className="max-w-2xl mx-auto p-6">
           <Button
             variant="ghost"
             onClick={onGoBack}
-            className="mb-6"
+            className="mb-6 text-gray-600 hover:text-gray-900 p-0 h-auto"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour
           </Button>
 
-          <Card className="text-center">
+          <Card className="text-center border-gray-200 shadow-sm">
             <CardContent className="p-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="w-8 h-8 text-green-600" />
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="w-8 h-8 text-gray-700" />
               </div>
 
-              <h2 className="text-2xl font-bold text-foreground mb-2">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 Rendez-vous confirmé !
               </h2>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-gray-600 mb-6">
                 Votre rendez-vous avec {doctorName} a été réservé avec succès
               </p>
 
-              <div className="bg-accent/50 rounded-xl p-6 mb-6 text-left">
+              <div className="bg-gray-50 rounded-lg p-6 mb-6 text-left border border-gray-200">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Date:</span>
-                    <span className="font-medium">{formatSelectedDate()}</span>
+                    <Calendar className="w-4 h-4 text-gray-500" />
+                    <span className="text-gray-600">Date:</span>
+                    <span className="font-medium text-gray-900">{formatSelectedDate()}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Heure:</span>
-                    <span className="font-medium">{formatSelectedTime()}</span>
+                    <Clock className="w-4 h-4 text-gray-500" />
+                    <span className="text-gray-600">Heure:</span>
+                    <span className="font-medium text-gray-900">{formatSelectedTime()}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {consultationMode === "video" ? 
-                      <Video className="w-4 h-4 text-muted-foreground" /> : 
-                      <Building2 className="w-4 h-4 text-muted-foreground" />
+                      <Video className="w-4 h-4 text-gray-500" /> : 
+                      <Building2 className="w-4 h-4 text-gray-500" />
                     }
-                    <span className="text-muted-foreground">Mode:</span>
-                    <span className="font-medium">
+                    <span className="text-gray-600">Mode:</span>
+                    <span className="font-medium text-gray-900">
                       {consultationMode === "video" ? "Téléconsultation" : "Au cabinet"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 col-span-2">
-                    <FileText className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Motif:</span>
-                    <span className="font-medium text-sm">{getSelectedReasonName()}</span>
+                    <FileText className="w-4 h-4 text-gray-500" />
+                    <span className="text-gray-600">Motif:</span>
+                    <span className="font-medium text-gray-900 text-sm">{getSelectedReasonName()}</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-3 justify-center">
-                <Button variant="outline" onClick={handleDownloadConfirmation}>
+                <Button variant="outline" onClick={handleDownloadConfirmation} className="border-gray-300 text-gray-700">
                   <Download className="w-4 h-4 mr-2" />
                   Télécharger
                 </Button>
-                <Button onClick={onClose}>
+                <Button onClick={onClose} className="bg-gray-900 hover:bg-gray-800 text-white">
                   Fermer
                 </Button>
               </div>
@@ -302,32 +303,37 @@ export function AppointmentBooking({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="border-b bg-card">
+      <div className="border-b border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto p-6">
           <Button
             variant="ghost"
             onClick={onGoBack}
-            className="mb-4"
+            className="mb-4 text-gray-600 hover:text-gray-900 p-0 h-auto"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour
           </Button>
 
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Prendre rendez-vous
             </h1>
-            <p className="text-lg text-muted-foreground">avec {doctorName}</p>
+            <p className="text-gray-600">avec {doctorName}</p>
           </div>
 
           <div className="space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
+            <div className="flex justify-between text-sm text-gray-600">
               <span>Étape {getCurrentStep()} sur 4</span>
               <span>{Math.round(progress)}% terminé</span>
             </div>
-            <Progress value={progress} className="h-3" />
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-gray-900 h-2 rounded-full transition-all duration-300" 
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -345,14 +351,12 @@ export function AppointmentBooking({
             <OptionCard
               checked={hasConsultedBefore === true}
               onChange={() => setHasConsultedBefore(true)}
-              icon={<User className="w-5 h-5 text-blue-600" />}
               title="Oui, je suis patient"
               description="Vous avez déjà consulté ce médecin"
             />
             <OptionCard
               checked={hasConsultedBefore === false}
               onChange={() => setHasConsultedBefore(false)}
-              icon={<User className="w-5 h-5 text-green-600" />}
               title="Non, nouveau patient"
               description="Première consultation avec ce médecin"
             />
@@ -371,14 +375,14 @@ export function AppointmentBooking({
               <OptionCard
                 checked={consultationMode === "video"}
                 onChange={() => setConsultationMode("video")}
-                icon={<Video className="w-5 h-5 text-blue-600" />}
+                icon={<Video className="w-4 h-4 text-gray-600" />}
                 title="Téléconsultation"
                 description="Consultation à distance par vidéo"
               />
               <OptionCard
                 checked={consultationMode === "cabinet"}
                 onChange={() => setConsultationMode("cabinet")}
-                icon={<Building2 className="w-5 h-5 text-orange-600" />}
+                icon={<Building2 className="w-4 h-4 text-gray-600" />}
                 title="Au cabinet"
                 description="Consultation physique au cabinet"
               />
@@ -401,7 +405,6 @@ export function AppointmentBooking({
                   checked={consultationReason === reason.id}
                   onChange={() => setConsultationReason(reason.id)}
                   disabled={!reason.availableForNewPatients && !hasConsultedBefore}
-                  icon={<FileText className="w-5 h-5 text-purple-600" />}
                   title={reason.name}
                   badge={!reason.availableForNewPatients && !hasConsultedBefore ? "Patients existants" : undefined}
                 />
@@ -418,36 +421,37 @@ export function AppointmentBooking({
             isActive={!selectedTimeSlot}
             isCompleted={!!selectedTimeSlot}
           >
-            <div className="space-y-4">
+            <div className="space-y-3">
               {availableDates.map((date) => (
-                <Card key={date.value} className="overflow-hidden">
+                <Card key={date.value} className="border-gray-200 overflow-hidden">
                   <Button
                     variant="ghost"
                     onClick={() => handleToggleDate(date.value)}
-                    className="w-full p-4 flex items-center justify-between hover:bg-accent/50"
+                    className="w-full p-4 flex items-center justify-between hover:bg-gray-50 text-left"
                   >
-                    <div className="text-left">
-                      <div className="font-semibold text-foreground">{date.label}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {date.slotsCount} créneaux disponibles
-                      </div>
+                    <div>
+                      <div className="font-medium text-gray-900">{date.label}</div>
                     </div>
                     {expandedDate === date.value ? (
-                      <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                      <ChevronUp className="w-5 h-5 text-gray-500" />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                      <ChevronDown className="w-5 h-5 text-gray-500" />
                     )}
                   </Button>
 
                   {expandedDate === date.value && (
-                    <div className="p-4 border-t bg-accent/20">
-                      <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+                    <div className="p-4 border-t border-gray-200 bg-gray-50">
+                      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-4">
                         {date.slots.map((time) => (
                           <Button
                             key={time}
                             variant={selectedTimeSlot === `${date.value}-${time}` ? "default" : "outline"}
                             onClick={() => handleSelectTimeSlot(date.value, time)}
-                            className="text-sm font-medium"
+                            className={`text-sm ${
+                              selectedTimeSlot === `${date.value}-${time}` 
+                                ? "bg-gray-900 text-white hover:bg-gray-800" 
+                                : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                            }`}
                           >
                             {time}
                           </Button>
@@ -455,13 +459,17 @@ export function AppointmentBooking({
                       </div>
 
                       {showMoreSlots[date.value] && date.moreSlots.length > 0 && (
-                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+                        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-4">
                           {date.moreSlots.map((time) => (
                             <Button
                               key={time}
                               variant={selectedTimeSlot === `${date.value}-${time}` ? "default" : "outline"}
                               onClick={() => handleSelectTimeSlot(date.value, time)}
-                              className="text-sm font-medium"
+                              className={`text-sm ${
+                                selectedTimeSlot === `${date.value}-${time}` 
+                                  ? "bg-gray-900 text-white hover:bg-gray-800" 
+                                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                              }`}
                             >
                               {time}
                             </Button>
@@ -473,7 +481,7 @@ export function AppointmentBooking({
                         <Button
                           variant="ghost"
                           onClick={() => handleToggleMoreSlots(date.value)}
-                          className="text-primary hover:text-primary/80"
+                          className="text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                         >
                           {showMoreSlots[date.value]
                             ? "Voir moins de créneaux"
@@ -491,12 +499,12 @@ export function AppointmentBooking({
 
         {/* Confirmation Button */}
         {selectedTimeSlot && !isConfirmed && (
-          <Card className="bg-primary/5 border-primary/20">
+          <Card className="bg-gray-50 border-gray-200">
             <CardContent className="p-6 text-center">
               <Button
                 onClick={handleConfirmAppointment}
                 size="lg"
-                className="w-full max-w-md"
+                className="w-full max-w-md bg-blue-600 hover:bg-blue-900 text-white"
               >
                 <Check className="w-5 h-5 mr-2" />
                 Confirmer le rendez-vous

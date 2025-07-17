@@ -14,7 +14,8 @@ import {
     Award,
     Languages,
     MapIcon,
-    Info
+    Info,
+    X
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -135,59 +136,61 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
     }
 
     return (
-        <div className={`${isInDialog ? '' : 'bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen'}`}>
-            {/* Enhanced Header Section */}
+        <div className={`${isInDialog ? '' : 'bg-gray-50 min-h-screen'}`}>
+            {/* Header Section */}
             {!isInDialog && (
-                <div className="bg-white shadow-sm border-b border-gray-100">
-                    <div className="max-w-7xl mx-auto px-6 py-8">
+                <div className="bg-white border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         <Button
                             variant="ghost"
                             onClick={onBack}
-                            className="mb-6 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                            className="mb-6 text-gray-600 hover:text-gray-900 p-0 h-auto"
                         >
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Retour à la recherche
                         </Button>
 
-                        <div className="flex flex-col lg:flex-row lg:items-center gap-6">
-                            <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
-                                <AvatarImage src={doctor.image} alt={doctor.name} className="object-cover" />
-                                <AvatarFallback className="text-xl font-semibold bg-blue-500 text-white">
-                                    {doctor.name.split(' ').map(n => n[0]).join('')}
-                                </AvatarFallback>
-                            </Avatar>
+                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                                <Avatar className="h-20 w-20 border-2 border-gray-100">
+                                    <AvatarImage src={doctor.image} alt={doctor.name} className="object-cover" />
+                                    <AvatarFallback className="text-lg font-semibold bg-gray-900 text-white">
+                                        {doctor.name.split(' ').map(n => n[0]).join('')}
+                                    </AvatarFallback>
+                                </Avatar>
 
-                            <div className="flex-1">
-                                <h1 className="text-4xl font-bold text-gray-900 mb-2">{doctor.name}</h1>
-                                <p className="text-xl text-gray-600 mb-4">{doctor.specialty}</p>
+                                <div className="flex-1">
+                                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{doctor.name}</h1>
+                                    <p className="text-lg text-gray-600 mb-4">{doctor.specialty}</p>
 
-                                <div className="flex gap-3 flex-wrap mb-4">
-                                    <Badge variant="outline" className="gap-2 px-3 py-1 bg-yellow-50 border-yellow-200 text-yellow-800">
-                                        <Star className="h-4 w-4 fill-current" />
-                                        {doctor.rating} • {doctor.reviewCount} avis
-                                    </Badge>
-                                    {doctor.acceptsNewPatients && (
-                                        <Badge className="gap-2 px-3 py-1 bg-green-100 text-green-800 border-green-200">
-                                            <CheckCircle className="h-4 w-4" />
-                                            Nouveaux patients
+                                    <div className="flex gap-2 flex-wrap mb-4">
+                                        <Badge variant="secondary" className="gap-1 bg-gray-100 text-gray-700 border-gray-200">
+                                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                                            {doctor.rating} • {doctor.reviewCount} avis
                                         </Badge>
-                                    )}
-                                    {doctor.teleconsultation && (
-                                        <Badge variant="outline" className="gap-2 px-3 py-1 bg-blue-50 border-blue-200 text-blue-800">
-                                            <Video className="h-4 w-4" />
-                                            Téléconsultation
-                                        </Badge>
-                                    )}
-                                </div>
-
-                                <div className="flex items-center gap-4 text-gray-600">
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="h-4 w-4" />
-                                        <span className="text-sm">{doctor.location}</span>
+                                        {doctor.acceptsNewPatients && (
+                                            <Badge className="gap-1 bg-gray-100 text-gray-700 border-gray-200">
+                                                <CheckCircle className="h-3 w-3" />
+                                                Nouveaux patients
+                                            </Badge>
+                                        )}
+                                        {doctor.teleconsultation && (
+                                            <Badge variant="secondary" className="gap-1 bg-gray-100 text-gray-700 border-gray-200">
+                                                <Video className="h-3 w-3" />
+                                                Téléconsultation
+                                            </Badge>
+                                        )}
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="h-4 w-4" />
-                                        <span className="text-sm">Ouvert aujourd&apos;hui • {doctor.schedule?.today}</span>
+
+                                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                                        <div className="flex items-center gap-2">
+                                            <MapPin className="h-4 w-4" />
+                                            <span>{doctor.location}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="h-4 w-4" />
+                                            <span>Ouvert aujourd'hui • {doctor.schedule?.today}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -198,28 +201,28 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
 
             {/* Compact Header for Dialog */}
             {isInDialog && (
-                <div className="bg-white border-b border-gray-100 p-6">
+                <div className="bg-white border-b border-gray-200 p-6">
                     <div className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16 border-2 border-gray-100 shadow-md">
+                        <Avatar className="h-14 w-14 border-2 border-gray-100">
                             <AvatarImage src={doctor.image} alt={doctor.name} />
-                            <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                            <AvatarFallback className="bg-gray-900 text-white font-semibold">
                                 {doctor.name.split(' ').map(n => n[0]).join('')}
                             </AvatarFallback>
                         </Avatar>
 
                         <div className="flex-1">
-                            <h2 className="text-2xl font-bold text-gray-900">{doctor.name}</h2>
+                            <h2 className="text-xl font-bold text-gray-900">{doctor.name}</h2>
                             <p className="text-gray-600 mb-2">{doctor.specialty}</p>
                             <div className="flex gap-2 flex-wrap">
-                                <Badge variant="outline" className="gap-1 text-xs bg-yellow-50 border-yellow-200 text-yellow-800">
-                                    <Star className="h-3 w-3 fill-current" />
+                                <Badge variant="secondary" className="gap-1 text-xs bg-gray-100 text-gray-700 border-gray-200">
+                                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                                     {doctor.rating} ({doctor.reviewCount})
                                 </Badge>
                                 {doctor.acceptsNewPatients && (
-                                    <Badge className="text-xs bg-green-100 text-green-800">Nouveaux patients</Badge>
+                                    <Badge className="text-xs bg-gray-100 text-gray-700 border-gray-200">Nouveaux patients</Badge>
                                 )}
                                 {doctor.teleconsultation && (
-                                    <Badge variant="outline" className="gap-1 text-xs bg-blue-50 border-blue-200 text-blue-800">
+                                    <Badge variant="secondary" className="gap-1 text-xs bg-gray-100 text-gray-700 border-gray-200">
                                         <Video className="h-3 w-3" />
                                         Téléconsultation
                                     </Badge>
@@ -231,60 +234,60 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
             )}
 
             {/* Main Content */}
-            <div className={`${isInDialog ? 'max-w-full' : 'max-w-7xl'} mx-auto px-6 py-8`}>
+            <div className={`${isInDialog ? 'max-w-full' : 'max-w-7xl'} mx-auto px-4 sm:px-6 lg:px-8 py-8`}>
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8">
-                    {/* Enhanced Main Content Area */}
+                    {/* Main Content Area */}
                     <div className="space-y-6">
-                        <Card className="shadow-sm border-0 ring-1 ring-gray-100">
+                        <Card className="border-gray-200 shadow-sm">
                             <CardContent className="p-0">
                                 <Tabs value={activeTab} onValueChange={setActiveTab}>
-                                    <div className="border-b border-gray-100">
-                                        <TabsList className="grid w-full grid-cols-5 h-12 bg-transparent rounded-none">
+                                    <div className="border-b border-gray-200">
+                                        <TabsList className="grid w-full grid-cols-5 h-12 bg-transparent rounded-none p-0">
                                             <TabsTrigger
                                                 value="essential"
-                                                className="data-[state=active]:bg-white-10 data-[state=active]:text-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none font-medium"
+                                                className="data-[state=active]:bg-transparent data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 rounded-none font-medium text-gray-600 hover:text-gray-900"
                                             >
-                                                L&apos;essentiel
+                                                L'essentiel
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="map"
-                                                className="data-[state=active]:bg-white-10 data-[state=active]:text-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none font-medium"
+                                                className="data-[state=active]:bg-transparent data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 rounded-none font-medium text-gray-600 hover:text-gray-900"
                                             >
                                                 Carte
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="hours"
-                                                className="data-[state=active]:bg-white-10 data-[state=active]:text-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none font-medium"
+                                                className="data-[state=active]:bg-transparent data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 rounded-none font-medium text-gray-600 hover:text-gray-900"
                                             >
                                                 Horaires
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="presentation"
-                                                className="data-[state=active]:bg-white-10 data-[state=active]:text-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none font-medium"
+                                                className="data-[state=active]:bg-transparent data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 rounded-none font-medium text-gray-600 hover:text-gray-900"
                                             >
                                                 Présentation
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="prices"
-                                                className="data-[state=active]:bg-white-10 data-[state=active]:text-blue-700 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none font-medium"
+                                                className="data-[state=active]:bg-transparent data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900 rounded-none font-medium text-gray-600 hover:text-gray-900"
                                             >
                                                 Tarifs
                                             </TabsTrigger>
                                         </TabsList>
                                     </div>
 
-                                    <div className="p-8">
-                                        <TabsContent value="essential" className="mt-0 space-y-8">
-                                            {/* Enhanced Video Consultation Card */}
+                                    <div className="p-6">
+                                        <TabsContent value="essential" className="mt-0 space-y-6">
+                                            {/* Video Consultation Card */}
                                             {doctor.teleconsultation && (
-                                                <Card className="border-0 bg-gradient-to-br from-blue-50 to-indigo-50 ring-1 ring-blue-100">
+                                                <Card className="border-gray-200 bg-gray-50">
                                                     <CardContent className="p-6">
-                                                        <div className="flex items-start gap-4 mb-6">
-                                                            <div className="p-2 bg-blue-100 rounded-lg">
-                                                                <Video className="h-6 w-6 text-blue-600" />
+                                                        <div className="flex items-start gap-4 mb-4">
+                                                            <div className="p-2 bg-gray-900 rounded-lg">
+                                                                <Video className="h-5 w-5 text-white" />
                                                             </div>
                                                             <div>
-                                                                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                                                <h3 className="font-semibold text-gray-900 mb-2">
                                                                     Consultation vidéo disponible
                                                                 </h3>
                                                                 <p className="text-gray-600 text-sm">
@@ -292,44 +295,42 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className="grid md:grid-cols-3 gap-4 mb-6">
+                                                        <div className="grid md:grid-cols-3 gap-3 mb-4">
                                                             {doctor.videoConsultationBenefits.map((benefit, index) => (
-                                                                <div key={index} className="flex items-center gap-3 p-3 bg-white/70 rounded-lg">
-                                                                    <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                                                                    <span className="text-sm font-medium">{benefit}</span>
+                                                                <div key={index} className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-200">
+                                                                    <CheckCircle className="h-4 w-4 text-gray-600 flex-shrink-0" />
+                                                                    <span className="text-sm text-gray-700">{benefit}</span>
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <Button variant="link" className="p-0 h-auto text-blue-600 font-medium">
+                                                        <Button variant="ghost" className="p-0 h-auto text-gray-700 hover:text-gray-900">
                                                             En savoir plus sur la téléconsultation →
                                                         </Button>
                                                     </CardContent>
                                                 </Card>
                                             )}
 
-                                            {/* Enhanced Information Grid */}
+                                            {/* Information Grid */}
                                             <div className="grid md:grid-cols-2 gap-6">
-                                                <Card className="border-0 ring-1 ring-gray-100">
+                                                <Card className="border-gray-200">
                                                     <CardHeader className="pb-4">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-green-100 rounded-lg">
-                                                                <CreditCard className="h-5 w-5 text-green-600" />
-                                                            </div>
+                                                            <CreditCard className="h-5 w-5 text-gray-600" />
                                                             <h3 className="font-semibold text-gray-900">Tarifs et remboursement</h3>
                                                         </div>
                                                     </CardHeader>
-                                                    <CardContent className="space-y-4">
-                                                        <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                                                            <span className="font-medium">Conventionné {doctor.conventioned}</span>
-                                                            <CheckCircle className="h-5 w-5 text-green-600" />
+                                                    <CardContent className="space-y-3">
+                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                            <span className="text-sm text-gray-900">Conventionné {doctor.conventioned}</span>
+                                                            <CheckCircle className="h-4 w-4 text-gray-600" />
                                                         </div>
-                                                        <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                                                            <span className="font-medium">Carte Vitale acceptée</span>
-                                                            <CheckCircle className="h-5 w-5 text-green-600" />
+                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                                            <span className="text-sm text-gray-900">Carte Vitale acceptée</span>
+                                                            <CheckCircle className="h-4 w-4 text-gray-600" />
                                                         </div>
                                                         <Button
-                                                            variant="link"
-                                                            className="mt-4 p-0 h-auto font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                                                            variant="ghost"
+                                                            className="mt-3 p-0 h-auto text-gray-700 hover:text-gray-900"
                                                             onClick={() => setActiveTab('prices')}
                                                         >
                                                             Voir tous les tarifs →
@@ -337,23 +338,21 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                     </CardContent>
                                                 </Card>
 
-                                                <Card className="border-0 ring-1 ring-gray-100">
+                                                <Card className="border-gray-200">
                                                     <CardHeader className="pb-4">
                                                         <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-purple-100 rounded-lg">
-                                                                <CreditCard className="h-5 w-5 text-purple-600" />
-                                                            </div>
+                                                            <CreditCard className="h-5 w-5 text-gray-600" />
                                                             <h3 className="font-semibold text-gray-900">Moyens de paiement</h3>
                                                         </div>
                                                     </CardHeader>
                                                     <CardContent className="space-y-3">
                                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                                                            <div className="h-3 w-3 bg-green-500 rounded-full" />
-                                                            <span className="font-medium">Espèces</span>
+                                                            <div className="h-2 w-2 bg-gray-600 rounded-full" />
+                                                            <span className="text-sm text-gray-900">Espèces</span>
                                                         </div>
                                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                                                            <div className="h-3 w-3 bg-green-500 rounded-full" />
-                                                            <span className="font-medium">Carte bancaire</span>
+                                                            <div className="h-2 w-2 bg-gray-600 rounded-full" />
+                                                            <span className="text-sm text-gray-900">Carte bancaire</span>
                                                         </div>
                                                     </CardContent>
                                                 </Card>
@@ -361,30 +360,28 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                         </TabsContent>
 
                                         <TabsContent value="map" className="mt-0">
-                                            <Card className="border-0 ring-1 ring-gray-100">
+                                            <Card className="border-gray-200">
                                                 <CardHeader>
                                                     <div className="flex items-center gap-3">
-                                                        <div className="p-2 bg-red-100 rounded-lg">
-                                                            <MapPin className="h-5 w-5 text-red-600" />
-                                                        </div>
+                                                        <MapPin className="h-5 w-5 text-gray-600" />
                                                         <h3 className="font-semibold text-gray-900">Localisation et accès</h3>
                                                     </div>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <div className="grid md:grid-cols-2 gap-8">
                                                         <div className="space-y-6">
-                                                            <div className="p-4 bg-gray-50 rounded-lg">
-                                                                <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                                                    <MapIcon className="h-4 w-4" />
+                                                            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                                                                    <MapIcon className="h-4 w-4 text-gray-600" />
                                                                     Cabinet médical
                                                                 </h4>
-                                                                <p className="text-gray-700 font-medium">{doctor.fullAddress}</p>
-                                                                <span className="text-sm text-gray-500 mt-1 block">{doctor.practicalInfo?.floor}</span>
+                                                                <p className="text-gray-900">{doctor.fullAddress}</p>
+                                                                <span className="text-sm text-gray-600 mt-1 block">{doctor.practicalInfo?.floor}</span>
                                                             </div>
 
                                                             <div>
                                                                 <h4 className="font-semibold mb-4 flex items-center gap-2">
-                                                                    <Clock className="h-4 w-4" />
+                                                                    <Clock className="h-4 w-4 text-gray-600" />
                                                                     Moyens de transport
                                                                 </h4>
                                                                 <div className="space-y-3">
@@ -393,10 +390,10 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                                         { type: 'Métro', info: doctor.transportInfo?.metro },
                                                                         { type: 'Bus', info: doctor.transportInfo?.bus }
                                                                     ].map((transport, index) => (
-                                                                        <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-                                                                            <div className="h-2 w-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                                                                        <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                                                            <div className="h-2 w-2 bg-gray-600 rounded-full mt-2 flex-shrink-0" />
                                                                             <div>
-                                                                                <span className="font-medium text-sm text-blue-800">{transport.type}</span>
+                                                                                <span className="font-medium text-sm text-gray-900">{transport.type}</span>
                                                                                 <p className="text-sm text-gray-600">{transport.info}</p>
                                                                             </div>
                                                                         </div>
@@ -404,17 +401,17 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                                 </div>
                                                             </div>
 
-                                                            <div className="p-4 bg-yellow-50 rounded-lg">
-                                                                <h4 className="font-semibold mb-2 text-yellow-800">Parking public</h4>
+                                                            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                <h4 className="font-semibold mb-2 text-gray-900">Parking public</h4>
                                                                 <span className="text-gray-700">{doctor.transportInfo?.parking}</span>
                                                             </div>
                                                         </div>
 
-                                                        <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center h-80 border border-gray-200">
+                                                        <div className="bg-gray-100 rounded-xl flex items-center justify-center h-80 border border-gray-200">
                                                             <div className="text-center">
-                                                                <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                                                                <p className="text-gray-600 mb-4 font-medium">Carte interactive</p>
-                                                                <Button variant="outline" size="sm" className="font-medium">
+                                                                <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                                                                <p className="text-gray-600 mb-4">Carte interactive</p>
+                                                                <Button variant="outline" size="sm" className="border-gray-300 text-gray-700">
                                                                     Afficher la carte
                                                                 </Button>
                                                             </div>
@@ -426,58 +423,54 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
 
                                         <TabsContent value="hours" className="mt-0">
                                             <div className="grid md:grid-cols-2 gap-6">
-                                                <Card className="border-0 ring-1 ring-gray-100">
+                                                <Card className="border-gray-200">
                                                     <CardHeader>
                                                         <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-blue-100 rounded-lg">
-                                                                <Clock className="h-5 w-5 text-blue-600" />
-                                                            </div>
-                                                            <h3 className="font-semibold text-gray-900">Horaires d&apos;ouverture</h3>
+                                                            <Clock className="h-5 w-5 text-gray-600" />
+                                                            <h3 className="font-semibold text-gray-900">Horaires d'ouverture</h3>
                                                         </div>
                                                     </CardHeader>
                                                     <CardContent>
-                                                        <div className="space-y-3">
+                                                        <div className="space-y-2">
                                                             {Object.entries(doctor.schedule?.weekly || {}).map(([day, hours]) => (
                                                                 <div key={day} className="flex justify-between items-center py-3 px-4 bg-gray-50 rounded-lg">
-                                                                    <span className="font-medium text-gray-900">{day}</span>
-                                                                    <span className="text-gray-600 font-medium">{hours}</span>
+                                                                    <span className="text-sm text-gray-900">{day}</span>
+                                                                    <span className="text-sm text-gray-600">{hours}</span>
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        <div className="mt-6 pt-6 border-t border-gray-200">
-                                                            <div className="p-4 bg-red-50 rounded-lg">
-                                                                <h4 className="font-semibold mb-2 text-red-800 flex items-center gap-2">
+                                                        <div className="mt-6 pt-4 border-t border-gray-200">
+                                                            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                <h4 className="font-semibold mb-2 text-gray-900 flex items-center gap-2">
                                                                     <Phone className="h-4 w-4" />
-                                                                    Contact d&apos;urgence
+                                                                    Contact d'urgence
                                                                 </h4>
-                                                                <p className="text-gray-700">{doctor.schedule?.emergency}</p>
+                                                                <p className="text-gray-700 text-sm">{doctor.schedule?.emergency}</p>
                                                             </div>
                                                         </div>
                                                     </CardContent>
                                                 </Card>
 
-                                                <Card className="border-0 ring-1 ring-gray-100">
+                                                <Card className="border-gray-200">
                                                     <CardHeader>
                                                         <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-green-100 rounded-lg">
-                                                                <Phone className="h-5 w-5 text-green-600" />
-                                                            </div>
+                                                            <Phone className="h-5 w-5 text-gray-600" />
                                                             <h3 className="font-semibold text-gray-900">Coordonnées</h3>
                                                         </div>
                                                     </CardHeader>
-                                                    <CardContent className="space-y-6">
-                                                        <div className="flex gap-4 p-4 bg-green-50 rounded-lg">
-                                                            <Phone className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                                                    <CardContent className="space-y-4">
+                                                        <div className="flex gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                            <Phone className="h-5 w-5 text-gray-600 mt-1 flex-shrink-0" />
                                                             <div>
-                                                                <strong className="block text-gray-900 mb-1">Téléphone</strong>
-                                                                <p className="text-gray-700 font-medium">{doctor.phone}</p>
+                                                                <span className="block text-sm font-medium text-gray-900 mb-1">Téléphone</span>
+                                                                <p className="text-gray-700">{doctor.phone}</p>
                                                             </div>
                                                         </div>
-                                                        <div className="flex gap-4 p-4 bg-blue-50 rounded-lg">
-                                                            <MapPin className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                                                        <div className="flex gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                            <MapPin className="h-5 w-5 text-gray-600 mt-1 flex-shrink-0" />
                                                             <div>
-                                                                <strong className="block text-gray-900 mb-1">Adresse</strong>
-                                                                <p className="text-gray-700 font-medium">{doctor.fullAddress}</p>
+                                                                <span className="block text-sm font-medium text-gray-900 mb-1">Adresse</span>
+                                                                <p className="text-gray-700">{doctor.fullAddress}</p>
                                                             </div>
                                                         </div>
                                                     </CardContent>
@@ -486,37 +479,33 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                         </TabsContent>
 
                                         <TabsContent value="presentation" className="mt-0">
-                                            <Card className="border-0 ring-1 ring-gray-100">
+                                            <Card className="border-gray-200">
                                                 <CardHeader>
                                                     <div className="flex items-center gap-3">
-                                                        <div className="p-2 bg-indigo-100 rounded-lg">
-                                                            <User className="h-5 w-5 text-indigo-600" />
-                                                        </div>
+                                                        <User className="h-5 w-5 text-gray-600" />
                                                         <h3 className="font-semibold text-gray-900">Présentation</h3>
                                                     </div>
                                                 </CardHeader>
-                                                <CardContent className="space-y-8">
-                                                    <div className="prose max-w-none">
-                                                        <div className="p-6 bg-gray-50 rounded-lg">
-                                                            <p className="text-gray-700 leading-relaxed mb-4">
-                                                                Le docteur <strong>{doctor.name?.split(' ').slice(1).join(' ')}</strong> vous accueille dans
-                                                                son cabinet médical à <strong>{doctor.location}</strong>.
-                                                            </p>
-                                                            <p className="text-gray-700 leading-relaxed">
-                                                                Il/Elle consulte uniquement sur rendez-vous : consultation physique au cabinet
-                                                                ou téléconsultation lorsque le motif le permet.
-                                                            </p>
-                                                        </div>
+                                                <CardContent className="space-y-6">
+                                                    <div className="p-6 bg-gray-50 rounded-lg border border-gray-200">
+                                                        <p className="text-gray-700 leading-relaxed mb-4">
+                                                            Le docteur <strong>{doctor.name?.split(' ').slice(1).join(' ')}</strong> vous accueille dans
+                                                            son cabinet médical à <strong>{doctor.location}</strong>.
+                                                        </p>
+                                                        <p className="text-gray-700 leading-relaxed">
+                                                            Il/Elle consulte uniquement sur rendez-vous : consultation physique au cabinet
+                                                            ou téléconsultation lorsque le motif le permet.
+                                                        </p>
                                                     </div>
 
                                                     <div>
                                                         <div className="flex items-center gap-3 mb-4">
-                                                            <Languages className="h-5 w-5 text-blue-600" />
+                                                            <Languages className="h-5 w-5 text-gray-600" />
                                                             <h4 className="font-semibold text-gray-900">Langues parlées</h4>
                                                         </div>
-                                                        <div className="flex gap-3">
+                                                        <div className="flex gap-2">
                                                             {doctor.languages?.map((lang, index) => (
-                                                                <Badge key={index} variant="outline" className="px-3 py-1 bg-blue-50 border-blue-200 text-blue-800">
+                                                                <Badge key={index} variant="secondary" className="bg-gray-100 text-gray-700 border-gray-200">
                                                                     {lang}
                                                                 </Badge>
                                                             ))}
@@ -524,16 +513,14 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                     </div>
 
                                                     <div>
-                                                        <div className="flex items-center gap-3 mb-6">
-                                                            <div className="p-2 bg-amber-100 rounded-lg">
-                                                                <Award className="h-5 w-5 text-amber-600" />
-                                                            </div>
+                                                        <div className="flex items-center gap-3 mb-4">
+                                                            <Award className="h-5 w-5 text-gray-600" />
                                                             <h4 className="font-semibold text-gray-900">Diplômes et formations</h4>
                                                         </div>
-                                                        <div className="space-y-4">
+                                                        <div className="space-y-3">
                                                             {doctor.education?.map((edu, index) => (
-                                                                <div key={index} className="flex gap-4 p-4 bg-amber-50 rounded-lg border border-amber-100">
-                                                                    <Badge variant="outline" className="bg-amber-100 border-amber-300 text-amber-800 font-semibold">
+                                                                <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                    <Badge variant="secondary" className="bg-gray-900 text-white">
                                                                         {edu.year}
                                                                     </Badge>
                                                                     <div>
@@ -549,34 +536,32 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                         </TabsContent>
 
                                         <TabsContent value="prices" className="mt-0">
-                                            <Card className="border-0 ring-1 ring-gray-100">
+                                            <Card className="border-gray-200">
                                                 <CardHeader>
                                                     <div className="flex items-center gap-3">
-                                                        <div className="p-2 bg-emerald-100 rounded-lg">
-                                                            <CreditCard className="h-5 w-5 text-emerald-600" />
-                                                        </div>
+                                                        <CreditCard className="h-5 w-5 text-gray-600" />
                                                         <h3 className="font-semibold text-gray-900">Tarifs et informations</h3>
                                                     </div>
                                                 </CardHeader>
-                                                <CardContent className="space-y-8">
+                                                <CardContent className="space-y-6">
                                                     <div>
                                                         <h4 className="font-semibold mb-4 text-gray-900">Services et tarifs</h4>
-                                                        <div className="space-y-3">
+                                                        <div className="space-y-2">
                                                             {doctor.services?.map((service, index) => (
-                                                                <div key={index} className="flex justify-between items-center py-4 px-5 bg-gray-50 rounded-lg border border-gray-100">
-                                                                    <span className="font-medium text-gray-900">{service.name}</span>
-                                                                    <strong className="text-lg text-emerald-600">{service.price}</strong>
+                                                                <div key={index} className="flex justify-between items-center py-4 px-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                    <span className="text-sm text-gray-900">{service.name}</span>
+                                                                    <strong className="text-gray-900">{service.price}</strong>
                                                                 </div>
                                                             ))}
                                                         </div>
                                                     </div>
 
-                                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                                                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                                                         <div className="flex items-start gap-3">
-                                                            <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                                            <Info className="h-5 w-5 text-gray-600 mt-0.5 flex-shrink-0" />
                                                             <div>
-                                                                <h5 className="font-semibold text-blue-900 mb-2">Information importante</h5>
-                                                                <p className="text-sm text-blue-800 leading-relaxed">
+                                                                <h5 className="font-semibold text-gray-900 mb-2">Information importante</h5>
+                                                                <p className="text-sm text-gray-700 leading-relaxed">
                                                                     Ces honoraires vous sont communiqués à titre indicatif par le soignant.
                                                                     Ils peuvent varier selon le type de soins finalement réalisés en cabinet.
                                                                 </p>
@@ -585,23 +570,23 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                     </div>
 
                                                     <div>
-                                                        <h4 className="font-semibold mb-6 text-gray-900">Informations légales</h4>
+                                                        <h4 className="font-semibold mb-4 text-gray-900">Informations légales</h4>
                                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-6 text-center">
-                                                                <strong className="block text-sm mb-3 text-gray-900">Numéro RPPS</strong>
-                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border">
+                                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                                                                <span className="block text-sm font-medium mb-2 text-gray-900">Numéro RPPS</span>
+                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border border-gray-200">
                                                                     {doctor.rpps}
                                                                 </span>
                                                             </div>
-                                                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-6 text-center">
-                                                                <strong className="block text-sm mb-3 text-gray-900">Numéro ADELI</strong>
-                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border">
+                                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                                                                <span className="block text-sm font-medium mb-2 text-gray-900">Numéro ADELI</span>
+                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border border-gray-200">
                                                                     {doctor.adeli}
                                                                 </span>
                                                             </div>
-                                                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-lg p-6 text-center">
-                                                                <strong className="block text-sm mb-3 text-gray-900">SIREN</strong>
-                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border">
+                                                            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                                                                <span className="block text-sm font-medium mb-2 text-gray-900">SIREN</span>
+                                                                <span className="text-gray-600 font-mono text-sm bg-white px-3 py-2 rounded border border-gray-200">
                                                                     {doctor.siren}
                                                                 </span>
                                                             </div>
@@ -609,18 +594,18 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                                     </div>
 
                                                     <div>
-                                                        <h4 className="font-semibold mb-6 text-gray-900">Questions fréquentes</h4>
-                                                        <Accordion type="single" collapsible className="space-y-3">
+                                                        <h4 className="font-semibold mb-4 text-gray-900">Questions fréquentes</h4>
+                                                        <Accordion type="single" collapsible className="space-y-2">
                                                             {doctor.faq?.map((question, index) => (
                                                                 <AccordionItem
                                                                     key={index}
                                                                     value={`item-${index}`}
-                                                                    className="border border-gray-200 rounded-lg px-6 bg-white"
+                                                                    className="border border-gray-200 rounded-lg px-4 bg-white"
                                                                 >
-                                                                    <AccordionTrigger className="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                                                    <AccordionTrigger className="text-sm font-medium text-gray-900 hover:text-gray-700">
                                                                         {question}
                                                                     </AccordionTrigger>
-                                                                    <AccordionContent className="text-gray-600 leading-relaxed pb-4">
+                                                                    <AccordionContent className="text-sm text-gray-600 leading-relaxed pb-4">
                                                                         Réponse détaillée à la question fréquemment posée. Cette section contiendrait
                                                                         des informations spécifiques selon la question posée.
                                                                     </AccordionContent>
@@ -637,22 +622,22 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                         </Card>
                     </div>
 
-                    {/* Enhanced Sidebar */}
+                    {/* Sidebar */}
                     <div className="space-y-6">
                         {/* Main Action Card */}
-                        <Card className="shadow-lg border-0 ring-1 ring-gray-100 ">
+                        <Card className="border-gray-200 shadow-sm">
                             <CardHeader className="pb-4">
-                                <h3 className="font-bold text-gray-900 text-lg">Prendre rendez-vous</h3>
+                                <h3 className="font-bold text-gray-900">Prendre rendez-vous</h3>
                                 <p className="text-sm text-gray-600">Réservez votre consultation en quelques clics</p>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="space-y-4">
+                            <CardContent className="space-y-4">
+                                <div className="space-y-3">
                                     <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-green-100 rounded-lg flex-shrink-0 mt-0.5">
-                                            <CheckCircle className="h-4 w-4 text-green-600" />
+                                        <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <CheckCircle className="h-4 w-4 text-gray-600" />
                                         </div>
                                         <div className="flex-1">
-                                            <span className="text-sm font-medium text-gray-900 block leading-tight">
+                                            <span className="text-sm font-medium text-gray-900 block">
                                                 Nouveaux patients acceptés
                                             </span>
                                             <span className="text-xs text-gray-500 mt-0.5 block">
@@ -662,11 +647,11 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                     </div>
 
                                     <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0 mt-0.5">
-                                            <MapPin className="h-4 w-4 text-blue-600" />
+                                        <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <MapPin className="h-4 w-4 text-gray-600" />
                                         </div>
                                         <div className="flex-1">
-                                            <span className="text-sm font-medium text-gray-900 block leading-tight">
+                                            <span className="text-sm font-medium text-gray-900 block">
                                                 Cabinet médical
                                             </span>
                                             <span className="text-xs text-gray-500 mt-0.5 block">
@@ -676,11 +661,11 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                     </div>
 
                                     <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0 mt-0.5">
-                                            <Video className="h-4 w-4 text-purple-600" />
+                                        <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Video className="h-4 w-4 text-gray-600" />
                                         </div>
                                         <div className="flex-1">
-                                            <span className="text-sm font-medium text-gray-900 block leading-tight">
+                                            <span className="text-sm font-medium text-gray-900 block">
                                                 Téléconsultation
                                             </span>
                                             <span className="text-xs text-gray-500 mt-0.5 block">
@@ -690,12 +675,12 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                     </div>
 
                                     <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-orange-100 rounded-lg flex-shrink-0 mt-0.5">
-                                            <Clock className="h-4 w-4 text-orange-600" />
+                                        <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <Clock className="h-4 w-4 text-gray-600" />
                                         </div>
                                         <div className="flex-1">
-                                            <span className="text-sm font-medium text-gray-900 block leading-tight">
-                                                Aujourd&apos;hui
+                                            <span className="text-sm font-medium text-gray-900 block">
+                                                Aujourd'hui
                                             </span>
                                             <span className="text-xs text-gray-500 mt-0.5 block">
                                                 {doctor.schedule?.today}
@@ -706,36 +691,36 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
 
                                 <Button
                                     onClick={handleAppointmentBooking}
-                                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                                    className="w-full bg-blue-600 hover:bg-blue-900 text-white font-medium shadow-sm"
                                     size="lg"
                                 >
-                                    <Calendar className="mr-2 h-5 w-5" />
-                                    PRENDRE RENDEZ-VOUS
+                                    <Calendar className="mr-2 h-4 w-4" />
+                                    Prendre rendez-vous
                                 </Button>
                             </CardContent>
                         </Card>
 
                         {/* Quick Info Card */}
-                        <Card className="border-0 ring-1 ring-gray-100">
+                        <Card className="border-gray-200">
                             <CardHeader className="flex flex-row items-center justify-between pb-3">
                                 <h3 className="font-semibold text-gray-900">Horaires du jour</h3>
                                 <Button
-                                    variant="link"
+                                    variant="ghost"
                                     size="sm"
                                     onClick={() => setActiveTab('hours')}
-                                    className="p-0 h-auto text-blue-600 font-medium text-xs"
+                                    className="p-0 h-auto text-gray-600 hover:text-gray-900 text-xs"
                                 >
                                     Voir tout →
                                 </Button>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3">
-                                    <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                                        <span className="text-sm font-medium text-gray-900">Aujourd&apos;hui</span>
-                                        <strong className="text-green-700">{doctor.schedule?.today}</strong>
+                                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                        <span className="text-sm font-medium text-gray-900">Aujourd'hui</span>
+                                        <span className="text-sm font-medium text-gray-700">{doctor.schedule?.today}</span>
                                     </div>
-                                    <div className="p-3 bg-red-50 rounded-lg">
-                                        <p className="text-xs text-red-800 leading-relaxed">
+                                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <p className="text-xs text-gray-700 leading-relaxed">
                                             <strong>Urgences:</strong> {doctor.schedule?.emergency}
                                         </p>
                                     </div>
@@ -744,12 +729,12 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                         </Card>
 
                         {/* Rating Card */}
-                        <Card className="border-0 ring-1 ring-gray-100">
+                        <Card className="border-gray-200">
                             <CardContent className="p-6">
                                 <div className="text-center">
                                     <div className="flex items-center justify-center gap-2 mb-2">
-                                        <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
-                                        <span className="text-2xl font-bold text-gray-900">{doctor.rating}</span>
+                                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                        <span className="text-xl font-bold text-gray-900">{doctor.rating}</span>
                                     </div>
                                     <p className="text-sm text-gray-600 mb-4">
                                         Basé sur <strong>{doctor.reviewCount} avis</strong> patients
@@ -765,7 +750,7 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                             />
                                         ))}
                                     </div>
-                                    <Button variant="outline" size="sm" className="text-xs">
+                                    <Button variant="outline" size="sm" className="text-xs border-gray-300 text-gray-700">
                                         Voir les avis
                                     </Button>
                                 </div>
