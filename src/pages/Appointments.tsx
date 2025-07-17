@@ -92,7 +92,7 @@ export default function Appointments() {
         
         <Button
           onClick={() => setIsSearchDialogOpen(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+          className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25"
         >
           <Plus className="w-4 h-4 mr-2" />
           Nouveau Rendez-vous

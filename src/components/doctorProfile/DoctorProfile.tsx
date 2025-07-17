@@ -691,7 +691,7 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
 
                                 <Button
                                     onClick={handleAppointmentBooking}
-                                    className="w-full bg-blue-600 hover:bg-blue-900 text-white font-medium shadow-sm"
+                                    className="w-full bg-blue-600 hover:bg-blue-900 text-white font-medium shadow-lg shadow-blue-600/25"
                                     size="lg"
                                 >
                                     <Calendar className="mr-2 h-4 w-4" />
@@ -750,7 +750,7 @@ export function DoctorProfile({ doctorId = 1, onBack, onAppointmentBooking, isIn
                                             />
                                         ))}
                                     </div>
-                                    <Button variant="outline" size="sm" className="text-xs border-gray-300 text-gray-700">
+                                    <Button variant="outline" size="sm" className="text-xs border-gray-300 text-gray-700 shadow-lg shadow-gray-600/25">
                                         Voir les avis
                                     </Button>
                                 </div>

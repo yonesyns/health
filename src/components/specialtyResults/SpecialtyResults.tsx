@@ -610,7 +610,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                     <CardContent className="p-0">
                       <div className="grid grid-cols-1 xl:grid-cols-[350px_1fr] gap-0">
                         {/* Doctor Info Section */}
-                        <div className="p-8 border-r border-gray-200">
+                        <div className="p-6 pt-[55px] border-r border-gray-200">
                           <div className="flex gap-4 mb-4">
                             <div className="relative flex-shrink-0">
                               <Avatar className="h-16 w-16 border-2 border-gray-100">
@@ -620,7 +620,7 @@ export function SpecialtyResults({ specialty, location = "", onGoBack, onSelectD
                                 </AvatarFallback>
                               </Avatar>
                               <Badge
-                                className={`absolute -top-6 -right-2 text-xs px-2 py-1 border ${getAvailabilityStatus(doctor).type === "success"
+                                className={`absolute -top-[35px]  text-xs px-2 py-1 border whitespace-nowrap ${getAvailabilityStatus(doctor).type === "success"
                                     ? "bg-gray-900 text-white border-gray-900"
                                     : "bg-gray-100 text-gray-700 border-gray-200"
                                   }`}
