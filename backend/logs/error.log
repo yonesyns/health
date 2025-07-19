@@ -1,0 +1,369 @@
+2025-07-17 05:52:27 [ERROR]: Failed to start server: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+PrismaClientInitializationError: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 06:01:15 [ERROR]: Failed to start server: Database `(not available)` does not exist on the database server at `localhost:5432`.
+PrismaClientInitializationError: Database `(not available)` does not exist on the database server at `localhost:5432`.
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 06:02:49 [ERROR]: Failed to start server: Database `(not available)` does not exist on the database server at `localhost:5432`.
+PrismaClientInitializationError: Database `(not available)` does not exist on the database server at `localhost:5432`.
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 06:06:28 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:88:36
+
+  85 const { email, password } = credentials;
+  86 
+  87 // Find user by email
+→ 88 const user = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:88:36
+
+  85 const { email, password } = credentials;
+  86 
+  87 // Find user by email
+→ 88 const user = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at AuthService.login (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:88:18)
+    at AuthController.login (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:28:22)
+2025-07-17 06:06:52 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:44
+
+  28 const { name, email, password } = userData;
+  29 
+  30 // Check if user already exists
+→ 31 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:44
+
+  28 const { name, email, password } = userData;
+  29 
+  30 // Check if user already exists
+→ 31 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:26)
+    at AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
+2025-07-17 06:07:14 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:44
+
+  28 const { name, email, password } = userData;
+  29 
+  30 // Check if user already exists
+→ 31 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:44
+
+  28 const { name, email, password } = userData;
+  29 
+  30 // Check if user already exists
+→ 31 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:31:26)
+    at AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
+2025-07-17 06:48:03 [ERROR]: Failed to start server: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+PrismaClientInitializationError: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 13:55:46 [ERROR]: Failed to start server: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+PrismaClientInitializationError: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:10[0m
+[1;94m   | [0m
+[1;94m 9 | [0m  provider = "postgresql"
+[1;94m10 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at async startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 14:05:37 [ERROR]: Failed to start server: Authentication failed against database server at `localhost`, the provided database credentials for `(not available)` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `(not available)` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at async startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 14:08:32 [ERROR]: Failed to start server: Authentication failed against database server at `localhost`, the provided database credentials for `(not available)` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `(not available)` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at async startServer (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\server.ts:22:5)
+2025-07-17 14:09:03 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:03 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:03 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:03 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:04 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:04 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:04 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:04 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:05 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:05 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:06 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:06 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:07 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:07 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:08 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:08 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:09 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:09 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:10 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:10 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:11 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:11 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:12 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:12 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:13 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:13 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:14 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:14 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:15 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:15 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:16 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:16 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:17 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:18 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:18 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:19 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:19 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:20 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:20 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:21 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 14:09:21 [ERROR]: Redis Client Error: connect ECONNREFUSED ::1:6379
+Error: connect ECONNREFUSED ::1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1532:16)
+2025-07-17 15:03:24 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:26)
+    at async AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
+2025-07-17 15:03:54 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:26)
+    at async AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
+2025-07-17 15:04:27 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:26)
+    at async AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
+2025-07-17 15:05:48 [ERROR]: Error caught by error handler: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:44
+
+  30 const { name, email, password } = userData;
+  31 
+  32 // Check if user already exists
+→ 33 const existingUser = await prisma.user.findUnique(
+The table `(not available)` does not exist in the current database.
+    at $n.handleRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
+    at $n.handleAndLogRequestError (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async AuthService.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\service\auth.service.ts:33:26)
+    at async AuthController.register (D:\Liadtech\MERN Stack\Project Structure for PERN Stack\backend\src\modules\auth\controller\auth.controller.ts:17:22)
