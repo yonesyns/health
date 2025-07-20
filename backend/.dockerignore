@@ -1,0 +1,9 @@
+node_modules
+logs
+*.log
+test
+coverage
+.env
+.git
+.gitignore
+prisma/migrations/*/README.md 
