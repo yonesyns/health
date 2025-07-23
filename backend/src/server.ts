@@ -34,6 +34,7 @@ async function startServer() {
       if (config.SWAGGER_ENABLED) {
         logger.info(`📚 API Documentation: http://localhost:${config.PORT}/api-docs`);
       }
+      console.log('✅ Backend ready');
     });
 
     // Graceful shutdown

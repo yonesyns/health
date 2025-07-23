@@ -1,28 +1,23 @@
-# Utilise une image Node officielle comme image de base
-FROM node:20-alpine
+# Utilise une image Node officielle comme base
+FROM node:18-alpine
 
-# Définir le répertoire de travail
 WORKDIR /app
-
-# Copier les fichiers de dépendances en premier pour optimiser le cache Docker
-COPY package.json package-lock.json ./
-
-# Installer toutes les dépendances (y compris devDependencies)
+RUN apk add --no-cache openssl
+# Copier les fichiers de dépendances
+COPY package*.json ./
 RUN npm install
 
-# Copier la configuration TypeScript et le code source
-COPY tsconfig.json ./
-COPY ./src ./src
-COPY ./prisma ./prisma
+# Copier tout le code source
+COPY . .
 
 # Générer le client Prisma
 RUN npx prisma generate
 
 # Compiler le code TypeScript
 RUN npx tsc
-
-# Exposer le port (à adapter si besoin)
+RUN ls -l dist
+# Exposer le port de l'application
 EXPOSE 5000
 
-# Démarrer l'application
-CMD ["node", "dist/server.js"] 
+# Lancer l'application compilée
+CMD ["node", "dist/server.js"]

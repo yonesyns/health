@@ -1,5 +1,6 @@
 import redisClient from '../../../config/redis';
 import { UserResponseDto } from '../dto/user.dto';
+import logger from '../../../utils/logger';
 
 export class UserCache {
   private readonly USER_KEY_PREFIX = 'user:';
@@ -22,20 +23,22 @@ export class UserCache {
       }
       return null;
     } catch (error) {
-      console.error('Error getting user from cache:', error);
-      return null;
+      logger.error('Error in getUser:', error);
+      throw error;
     }
   }
 
   async setUser(id: string, user: UserResponseDto): Promise<void> {
     try {
+      await redisClient.connect(); // S'assure que la connexion est active
       await redisClient.set(
         this.getUserKey(id),
         JSON.stringify(user),
-        this.TTL
+        { EX: 60 * 60 * 24 } // CORRECT: 24 heures via objet d'options
       );
     } catch (error) {
-      console.error('Error setting user in cache:', error);
+      logger.error('Error in setUser:', error);
+      throw error;
     }
   }
 
@@ -47,7 +50,7 @@ export class UserCache {
       }
       return null;
     } catch (error) {
-      console.error('Error getting user list from cache:', error);
+      logger.error('Error getting user list from cache:', error);
       return null;
     }
   }
@@ -57,10 +60,10 @@ export class UserCache {
       await redisClient.set(
         this.getUserListKey(query),
         JSON.stringify(data),
-        this.TTL
+        { EX: this.TTL } // ✅ CORRECT : Utiliser options pour le TTL
       );
     } catch (error) {
-      console.error('Error setting user list in cache:', error);
+      logger.error('Error setting user list in cache:', error);
     }
   }
 
@@ -70,7 +73,7 @@ export class UserCache {
       // Also clear user list caches
       await this.clearUserListCaches();
     } catch (error) {
-      console.error('Error deleting user from cache:', error);
+      logger.error('Error deleting user from cache:', error);
     }
   }
 
@@ -81,20 +84,19 @@ export class UserCache {
       }
       await this.clearUserListCaches();
     } catch (error) {
-      console.error('Error clearing user caches:', error);
+      logger.error('Error clearing user caches:', error);
     }
   }
 
   private async clearUserListCaches(): Promise<void> {
     try {
       // Get all user list keys and delete them
-      const client = redisClient.getClient();
-      const keys = await client.keys(`${this.USER_LIST_KEY_PREFIX}*`);
+      const keys = await redisClient.keys(`${this.USER_LIST_KEY_PREFIX}*`);
       if (keys.length > 0) {
-        await client.del(keys);
+        await redisClient.del(keys);
       }
     } catch (error) {
-      console.error('Error clearing user list caches:', error);
+      logger.error('Error clearing user list caches:', error);
     }
   }
-} 
+}
