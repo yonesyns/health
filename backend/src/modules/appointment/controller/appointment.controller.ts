@@ -7,7 +7,12 @@ const appointmentService = new AppointmentService();
 
 export const createAppointment = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('Body reçu:', req.body);
+    console.log('Headers:', req.headers);
+    
     const dto: CreateAppointmentDto = req.body;
+    console.log('DTO après parsing:', dto);
+    
     const appointment = await appointmentService.createAppointment(dto);
     res.status(201).json({ success: true, data: appointment });
   } catch (error) {

@@ -7,8 +7,9 @@ export interface DashboardStatistics {
   activeUsers: number;
   newUsersToday: number;
   systemStatus: string;
-  totalProducts?: number;
-  totalOrders?: number;
+  totalDoctors?: number;
+  totalPatients?: number;
+  totalAppointments?: number;
 }
 
 export interface RecentActivity {
@@ -27,8 +28,9 @@ export class DashboardService {
       totalUsers,
       activeUsers,
       newUsersToday,
-      totalProducts,
-      totalOrders
+      totalDoctors,
+      totalPatients,
+      totalAppointments
     ] = await Promise.all([
       // Total users
       prisma.user.count(),
@@ -47,11 +49,14 @@ export class DashboardService {
         }
       }),
       
-      // Total products
-      prisma.product.count(),
+      // Total doctors
+      prisma.doctor.count(),
       
-      // Total orders
-      prisma.order.count()
+      // Total patients
+      prisma.patient.count(),
+      
+      // Total appointments
+      prisma.appointment.count()
     ]);
 
     return {
@@ -59,8 +64,9 @@ export class DashboardService {
       activeUsers,
       newUsersToday,
       systemStatus: 'online',
-      totalProducts,
-      totalOrders,
+      totalDoctors,
+      totalPatients,
+      totalAppointments,
     };
   }
 
@@ -85,7 +91,7 @@ export class DashboardService {
       title: 'New user registered',
       description: `${user.firstName} ${user.lastName} created a new account`,
       time: user.createdAt,
-      userId: user.id,
+      userId: user.id.toString(),
       userName: `${user.firstName} ${user.lastName}`,
     }));
 

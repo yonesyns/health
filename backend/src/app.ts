@@ -17,6 +17,7 @@ import productRoutes from './modules/product/router';
 import orderRoutes from './modules/order/router';
 import authRoutes from './modules/auth/router/auth.router';
 import dashboardRoutes from './modules/dashboard/router/dashboard.router';
+import appointmentRoutes from './modules/appointment/router/appointment.router';
 
 const app = express();
 
@@ -73,6 +74,7 @@ apiRouter.use('/users', userRoutes);
 apiRouter.use('/dashboard', dashboardRoutes);
 apiRouter.use('/products', productRoutes);
 apiRouter.use('/orders', orderRoutes);
+apiRouter.use('/appointments', appointmentRoutes);
 
 // Mount API routes with version prefix
 app.use(`/api/${config.API_VERSION}`, apiRouter);

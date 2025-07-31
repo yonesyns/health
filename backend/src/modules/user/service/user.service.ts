@@ -42,7 +42,9 @@ export class UserService {
     // Create user
     const user = await this.userRepository.create({
       ...userData,
-      password: hashedPassword,
+      passwordHash: hashedPassword,
+      username: userData.email, // Use email as username
+      role: 'user', // Default role
     });
 
     // Generate tokens
@@ -68,7 +70,9 @@ export class UserService {
     // Create user
     const user = await this.userRepository.create({
       ...userData,
-      password: hashedPassword,
+      passwordHash: hashedPassword,
+      username: userData.email, // Use email as username
+      role: 'user', // Default role
     });
 
     return this.mapToResponseDto(user);
@@ -79,19 +83,17 @@ export class UserService {
     accessToken: string;
     refreshToken: string;
   }> {
-    // Find user by email
     const user = await this.userRepository.findByEmail(credentials.email);
     if (!user) {
       throw new AuthenticationError('Invalid email or password');
     }
 
-    // Check if user is active
     if (!user.isActive) {
       throw new AuthenticationError('Account is deactivated');
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+    const isPasswordValid = await bcrypt.compare(credentials.password, user.passwordHash);
     if (!isPasswordValid) {
       throw new AuthenticationError('Invalid email or password');
     }
@@ -163,7 +165,7 @@ export class UserService {
     }
 
     // Verify current password
-    const isCurrentPasswordValid = await bcrypt.compare(passwordData.currentPassword, user.password);
+    const isCurrentPasswordValid = await bcrypt.compare(passwordData.currentPassword, user.passwordHash);
     if (!isCurrentPasswordValid) {
       throw new ValidationError('Current password is incorrect');
     }
@@ -234,7 +236,15 @@ export class UserService {
   }
 
   private mapToResponseDto(user: User): UserResponseDto {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return {
+      id: user.id.toString(),
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 } 

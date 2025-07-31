@@ -11,106 +11,304 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
-  role      Role     @default(USER)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// ===== MODÈLES ESSENTIELS POUR LA GESTION DES RENDEZ-VOUS =====
 
-  // Relations
-  orders Order[]
+model Hospital {
+  id                   Int                 @id @default(autoincrement())
+  name                 String
+  address              String
+  phone                String
+  email                String?
+  capacity             Int
+  emergencyCapacity    Int                 @map("emergency_capacity")
+  beds                 Int                 @default(0)
+  doctorCount          Int                 @default(0) @map("doctor_count")
+  patientCount         Int                 @default(0) @map("patient_count")
+  status               String              @default("active")
+  image                String?
+  ipAddress            String?             @map("ip_address")
+  systemStatus         String              @default("active") @map("system_status")
+  lastPing             DateTime?           @map("last_ping")
+  autoUpdate           Boolean             @default(true) @map("auto_update")
+  coordinates          Json?
+  licenseNumber        String?             @unique @map("license_number")
+  accreditation        String?
+  emergencyServices    Boolean             @default(true) @map("emergency_services")
+  website              String?
+  contactPerson        String?             @map("contact_person")
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+  departments          Department[]
+  doctors              Doctor[]
+  patients             Patient[]
+  rooms                Room[]
+  users                User[]
 
-  patientAppointments Appointment[] @relation("PatientAppointments")
-  doctorAppointments  Appointment[] @relation("DoctorAppointments")
-
-  @@map("users")
+  @@map("hospitals")
 }
 
-model Product {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  price       Decimal  @db.Decimal(10, 2)
-  stock       Int      @default(0)
-  imageUrl    String?
-  category    String
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Department {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String?
+  code              String?             @unique
+  floor             Int?
+  capacity          Int?
+  hospitalId        Int?                @map("hospital_id")
+  headDoctorId      Int?                @map("head_doctor_id")
+  isActive          Boolean             @default(true) @map("is_active")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  hospital          Hospital?           @relation(fields: [hospitalId], references: [id])
+  doctors           Doctor[]
+  rooms             Room[]
 
-  // Relations
-  orderItems OrderItem[]
-
-  @@map("products")
+  @@unique([hospitalId, name], name: "department_hospital_unique")
+  @@map("departments")
 }
 
-model Order {
-  id          String      @id @default(cuid())
-  userId      String
-  status      OrderStatus @default(PENDING)
-  totalAmount Decimal     @db.Decimal(10, 2)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+model Doctor {
+  id                 Int                 @id @default(autoincrement())
+  hospitalId         Int?                @map("hospital_id")
+  departmentId       Int?                @map("department_id")
+  registrationNumber String              @unique @map("registration_number")
+  firstName          String              @map("first_name")
+  lastName           String              @map("last_name")
+  gender             Gender?
+  dateOfBirth        DateTime?           @map("date_of_birth")
+  email              String?             @unique
+  phone              String?
+  licenseNumber      String?             @unique @map("license_number")
+  specialty          String?
+  profilePhoto       String?             @map("profile_photo")
+  preferredLanguage  String?             @map("preferred_language")
+  status             DoctorStatus        @default(off_duty)
+  bio                String?
+  role               String?
+  yearsOfExperience  Int?                @map("years_of_experience")
+  address            String?
+  emergencyContact   String?             @map("emergency_contact")
+  hireDate           DateTime?           @map("hire_date")
+  salary             Decimal?            @db.Decimal(10, 2)
+  isActive           Boolean             @default(true) @map("is_active")
+  createdBy          String?             @map("created_by")
+  createdByRole      String?             @map("created_by_role")
+  approvedAt         DateTime?           @map("approved_at")
+  approvedBy         String?             @map("approved_by")
+  approvedByRole     String?             @map("approved_by_role")
+  rejectedAt         DateTime?           @map("rejected_at")
+  rejectedBy         String?             @map("rejected_by")
+  rejectedByRole     String?             @map("rejected_by_role")
+  rejectionReason    String?             @map("rejection_reason")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  appointments       Appointment[]
+  availabilities     Availability[]
+  workSchedules      WorkSchedule[]
+  department         Department?         @relation(fields: [departmentId], references: [id])
+  hospital           Hospital?           @relation(fields: [hospitalId], references: [id])
+  patients           Patient[]
+  user               User?
 
-  // Relations
-  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orderItems OrderItem[]
-
-  @@map("orders")
+  @@map("doctors")
 }
 
-model OrderItem {
-  id        String  @id @default(cuid())
-  orderId   String
-  productId String
-  quantity  Int
-  price     Decimal @db.Decimal(10, 2)
+model Patient {
+  id                       Int                 @id @default(autoincrement())
+  firstName                String              @map("first_name")
+  lastName                 String              @map("last_name")
+  dateOfBirth              DateTime            @map("date_of_birth")
+  gender                   Gender
+  identifierType           String              @map("identifier_type")
+  identifier               String
+  socialSecurityNumber     String?             @unique @map("social_security_number")
+  profilePhoto             String?             @map("profile_photo")
+  phone                    String?
+  email                    String?
+  address                  String?
+  city                     String?
+  state                    String?
+  zipCode                  String?             @map("zip_code")
+  country                  String?
+  bloodGroup               String?             @map("blood_group")
+  autonomyLevel            String?             @map("autonomy_level")
+  heightCm                 Int?                @map("height_cm")
+  weightKg                 Int?                @map("weight_kg")
+  smokingStatus            String?             @map("smoking_status")
+  alcoholConsumption       String?             @map("alcohol_consumption")
+  allergies                String?
+  medicalHistoryText       String?             @map("medical_history_text")
+  maritalStatus            String?             @map("marital_status")
+  occupation               String?
+  preferredLanguage        String?             @map("preferred_language")
+  consent                  Boolean             @default(false)
+  emergencyContactName     String?             @map("emergency_contact_name")
+  emergencyContactPhone    String?             @map("emergency_contact_phone")
+  emergencyContactRelation String?             @map("emergency_contact_relation")
+  patientStatus            String?             @map("patient_status")
+  lastVisit                DateTime?           @map("last_visit")
+  doctorId                 Int?                @map("doctor_id")
+  hospitalId               Int?                @map("hospital_id")
+  notes                    String?
+  createdBy                String?             @map("created_by")
+  createdByRole            String?             @map("created_by_role")
+  approvedAt               DateTime?           @map("approved_at")
+  approvedBy               String?             @map("approved_by")
+  approvedByRole           String?             @map("approved_by_role")
+  rejectedAt               DateTime?           @map("rejected_at")
+  rejectedBy               String?             @map("rejected_by")
+  rejectedByRole           String?             @map("rejected_by_role")
+  rejectionReason          String?             @map("rejection_reason")
+  createdAt                DateTime            @default(now()) @map("created_at")
+  updatedAt                DateTime            @updatedAt @map("updated_at")
+  appointments             Appointment[]
+  doctor                   Doctor?             @relation(fields: [doctorId], references: [id])
+  hospital                 Hospital?           @relation(fields: [hospitalId], references: [id])
 
-  // Relations
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@unique([orderId, productId])
-  @@map("order_items")
+  @@map("patients")
 }
 
 model Appointment {
-  id         String   @id @default(cuid())
-  date       DateTime
-  status     AppointmentStatus @default(SCHEDULED)
-  patientId  String
-  doctorId   String
-  notes      String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  // Relations
-  patient    User     @relation("PatientAppointments", fields: [patientId], references: [id])
-  doctor     User     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  id                          Int                           @id @default(autoincrement())
+  patientId                   Int                           @map("patient_id")
+  doctorId                    Int                           @map("doctor_id")
+  scheduledAt                 DateTime                      @map("scheduled_at")
+  duration                    Int?
+  status                      AppointmentStatus             @default(scheduled)
+  reason                      String?
+  notes                       String?
+  followUpDate                DateTime?                     @map("follow_up_date")
+  roomId                      Int?                          @map("room_id")
+  createdAt                   DateTime                      @default(now()) @map("created_at")
+  updatedAt                   DateTime                      @updatedAt @map("updated_at")
+  doctor                      Doctor                        @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient                     Patient                       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  room                        Room?                         @relation(fields: [roomId], references: [id])
 
   @@map("appointments")
 }
 
-enum Role {
-  USER
-  ADMIN
+model Room {
+  id              Int              @id @default(autoincrement())
+  hospitalId      Int              @map("hospital_id")
+  departmentId    Int?             @map("department_id")
+  number          String
+  type            String
+  floor           Int
+  capacity        Int              @default(1)
+  isAvailable     Boolean          @default(true) @map("is_available")
+  patientName     String?          @map("patient_name")
+  status          RoomStatus       @default(available)
+  equipment       String?
+  notes           String?
+  dailyRate       Decimal?         @map("daily_rate") @db.Decimal(10, 2)
+  features        String?
+  lastCleaned     DateTime?        @map("last_cleaned")
+  lastMaintenance DateTime?        @map("last_maintenance")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  appointments    Appointment[]
+  department      Department?      @relation(fields: [departmentId], references: [id])
+  hospital        Hospital         @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+
+  @@unique([hospitalId, number], name: "room_hospital_unique")
+  @@map("rooms")
 }
 
-enum OrderStatus {
-  PENDING
-  PROCESSING
-  SHIPPED
-  DELIVERED
-  CANCELLED
+model User {
+  id                  Int            @id @default(autoincrement())
+  username            String         @unique
+  passwordHash        String         @map("password_hash")
+  email               String         @unique
+  firstName           String         @map("first_name")
+  lastName            String         @map("last_name")
+  role                String
+  hospitalId          Int?           @map("hospital_id")
+  doctorId            Int?           @unique @map("doctor_id")
+  isActive            Boolean        @default(true) @map("is_active")
+  lastLogin           DateTime?      @map("last_login")
+  failedLoginAttempts Int            @default(0) @map("failed_login_attempts")
+  accountLockedUntil  DateTime?      @map("account_locked_until")
+  passwordResetToken  String?        @map("password_reset_token")
+  passwordResetExpiry DateTime?      @map("password_reset_expiry")
+  emailVerified       Boolean        @default(false) @map("email_verified")
+  twoFactorEnabled    Boolean        @default(false) @map("two_factor_enabled")
+  profilePhoto        String?        @map("profile_photo")
+  phone               String?
+  preferences         Json?
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+  doctor              Doctor?        @relation(fields: [doctorId], references: [id])
+  hospital            Hospital?      @relation(fields: [hospitalId], references: [id])
+
+  @@map("users")
+}
+
+model Availability {
+  id         Int       @id @default(autoincrement())
+  doctorId   Int       @map("doctor_id")
+  weekDay    Int       @map("week_day")
+  startTime  String    @map("start_time")
+  endTime    String    @map("end_time")
+  available  Boolean   @default(true)
+  notes      String?
+  startDate  DateTime? @map("start_date")
+  endDate    DateTime? @map("end_date")
+  recurrence String?
+  isOverride Boolean   @default(false) @map("is_override")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  doctor     Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@map("availabilities")
+}
+
+model WorkSchedule {
+  id         Int       @id @default(autoincrement())
+  doctorId   Int       @map("doctor_id")
+  weekDay    Int       @map("week_day")
+  startTime  String    @map("start_time")
+  endTime    String    @map("end_time")
+  breakStart String?   @map("break_start")
+  breakEnd   String?   @map("break_end")
+  isActive   Boolean   @default(true) @map("is_active")
+  startDate  DateTime  @map("start_date")
+  endDate    DateTime? @map("end_date")
+  shiftType  String?   @map("shift_type")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  doctor     Doctor    @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@map("work_schedules")
+}
+
+// ===== ENUMS ESSENTIELS =====
+
+enum DoctorStatus {
+  on_duty
+  off_duty
+  on_call
+  on_leave
+}
+
+enum Gender {
+  male
+  female
+  other
+  undisclosed
 }
 
 enum AppointmentStatus {
-  SCHEDULED
-  CANCELLED
-  COMPLETED
-} 
+  scheduled
+  in_progress
+  completed
+  canceled
+  no_show
+}
+
+enum RoomStatus {
+  available
+  occupied
+  cleaning
+  maintenance
+}

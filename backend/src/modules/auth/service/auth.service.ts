@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { RegisterDto, LoginDto, AuthResponse } from '../dto/auth.dto';
 import { AppError } from '../../../utils/AppError';
 import { config } from '../../../config/server';
@@ -8,8 +8,8 @@ import { config } from '../../../config/server';
 const prisma = new PrismaClient();
 
 export class AuthService {
-  private generateTokens(userId: string, role: Role) {
-    const payload = { userId, role: role.toString() };
+  private generateTokens(userId: number, role: string) {
+    const payload = { userId: userId.toString(), role };
     
     const accessToken = jwt.sign(
       payload,
@@ -50,10 +50,11 @@ export class AuthService {
     const user = await prisma.user.create({
       data: {
         email,
-        password: hashedPassword,
+        passwordHash: hashedPassword,
         firstName,
         lastName,
-        role: Role.USER, // Default role
+        username: email, // Use email as username for now
+        role: 'user', // Default role
       },
       select: {
         id: true,
@@ -71,7 +72,7 @@ export class AuthService {
 
     return {
       user: {
-        id: user.id,
+        id: user.id.toString(),
         name: `${user.firstName} ${user.lastName}`.trim(),
         email: user.email,
         role: user.role,
@@ -92,7 +93,7 @@ export class AuthService {
       select: {
         id: true,
         email: true,
-        password: true,
+        passwordHash: true,
         firstName: true,
         lastName: true,
         role: true,
@@ -110,7 +111,7 @@ export class AuthService {
     }
 
     // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       throw new AppError('Invalid email or password', 400);
     }
@@ -120,7 +121,7 @@ export class AuthService {
 
     return {
       user: {
-        id: user.id,
+        id: user.id.toString(),
         name: `${user.firstName} ${user.lastName}`.trim(),
         email: user.email,
         role: user.role,
@@ -139,9 +140,9 @@ export class AuthService {
     console.log(`User logged out with token: ${token.substring(0, 20)}...`);
   }
 
-  async verifyToken(token: string): Promise<{ userId: string; role: Role }> {
+  async verifyToken(token: string): Promise<{ userId: string; role: string }> {
     try {
-      const decoded = jwt.verify(token, config.JWT_SECRET) as { userId: string; role: Role };
+      const decoded = jwt.verify(token, config.JWT_SECRET) as { userId: string; role: string };
       return decoded;
     } catch (error) {
       throw new AppError('Invalid or expired token', 401);

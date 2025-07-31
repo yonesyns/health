@@ -3,7 +3,7 @@ import prisma from '../../../config/prisma';
 import { CreateUserDto, UpdateUserDto, GetUsersQueryDto } from '../dto/user.dto';
 
 export class UserRepository {
-  async create(data: CreateUserDto & { password: string }): Promise<User> {
+  async create(data: CreateUserDto & { passwordHash: string; username: string; role: string }): Promise<User> {
     return await prisma.user.create({
       data,
     });
@@ -11,7 +11,7 @@ export class UserRepository {
 
   async findById(id: string): Promise<User | null> {
     return await prisma.user.findUnique({
-      where: { id },
+      where: { id: parseInt(id) },
     });
   }
 
@@ -73,34 +73,34 @@ export class UserRepository {
 
   async update(id: string, data: UpdateUserDto): Promise<User> {
     return await prisma.user.update({
-      where: { id },
+      where: { id: parseInt(id) },
       data,
     });
   }
 
   async updatePassword(id: string, hashedPassword: string): Promise<User> {
     return await prisma.user.update({
-      where: { id },
-      data: { password: hashedPassword },
+      where: { id: parseInt(id) },
+      data: { passwordHash: hashedPassword },
     });
   }
 
   async delete(id: string): Promise<User> {
     return await prisma.user.update({
-      where: { id },
+      where: { id: parseInt(id) },
       data: { isActive: false },
     });
   }
 
   async hardDelete(id: string): Promise<User> {
     return await prisma.user.delete({
-      where: { id },
+      where: { id: parseInt(id) },
     });
   }
 
   async exists(id: string): Promise<boolean> {
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { id: parseInt(id) },
       select: { id: true },
     });
     return !!user;
@@ -110,7 +110,7 @@ export class UserRepository {
     const where: Prisma.UserWhereInput = { email };
     
     if (excludeId) {
-      where.NOT = { id: excludeId };
+      where.NOT = { id: parseInt(excludeId) };
     }
 
     const user = await prisma.user.findFirst({
