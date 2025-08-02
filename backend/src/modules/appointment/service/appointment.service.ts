@@ -45,6 +45,8 @@ export class AppointmentService {
         doctorId: parseInt(data.doctorId),
         notes: data.notes,
         status: AppointmentStatus.scheduled,
+        visitType: data.visitType || 'in_person',
+        hasConsultedBefore: data.hasConsultedBefore || false,
       },
     });
   }
@@ -94,6 +96,8 @@ export class AppointmentService {
       data: {
         ...(scheduledAt && { scheduledAt }),
         ...(data.notes && { notes: data.notes }),
+        ...(data.visitType && { visitType: data.visitType }),
+        ...(data.hasConsultedBefore !== undefined && { hasConsultedBefore: data.hasConsultedBefore }),
       },
     });
   }

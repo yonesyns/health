@@ -179,6 +179,8 @@ model Appointment {
   notes                       String?
   followUpDate                DateTime?                     @map("follow_up_date")
   roomId                      Int?                          @map("room_id")
+  visitType                   VisitType                     @default(in_person) @map("visit_type")
+  hasConsultedBefore          Boolean                       @default(false) @map("has_consulted_before")
   createdAt                   DateTime                      @default(now()) @map("created_at")
   updatedAt                   DateTime                      @updatedAt @map("updated_at")
   doctor                      Doctor                        @relation(fields: [doctorId], references: [id], onDelete: Cascade)
@@ -311,4 +313,9 @@ enum RoomStatus {
   occupied
   cleaning
   maintenance
+}
+
+enum VisitType {
+  in_person
+  teleconsultation
 }

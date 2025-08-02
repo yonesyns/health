@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { AppointmentService, CreateAppointmentRequest } from "@/services/appointmentService"
 
 interface AppointmentBookingProps {
   doctorName?: string
@@ -211,8 +212,34 @@ export function AppointmentBooking({
     setSelectedTimeSlot(`${date}-${time}`)
   }
 
-  const handleConfirmAppointment = () => {
-    setIsConfirmed(true)
+  const handleConfirmAppointment = async () => {
+    try {
+      // Préparer les données pour l'API
+      const [date, time] = selectedTimeSlot.split("-")
+      const scheduledDate = new Date(`${date}T${time}:00`)
+      
+      const appointmentData: CreateAppointmentRequest = {
+        date: scheduledDate.toISOString(),
+        patientId: "1", // TODO: Récupérer l'ID du patient connecté
+        doctorId: "1", // TODO: Récupérer l'ID du médecin sélectionné
+        notes: getSelectedReasonName(),
+        visitType: consultationMode === "video" ? "teleconsultation" : "in_person",
+        hasConsultedBefore: hasConsultedBefore || false,
+      }
+
+      // Appeler l'API pour créer le rendez-vous
+      const response = await AppointmentService.createAppointment(appointmentData)
+      
+      if (response.success) {
+        setIsConfirmed(true)
+      } else {
+        throw new Error("Erreur lors de la création du rendez-vous")
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création du rendez-vous:", error)
+      // TODO: Afficher un message d'erreur à l'utilisateur
+      alert("Erreur lors de la création du rendez-vous. Veuillez réessayer.")
+    }
   }
 
   const formatSelectedDate = (): string => {
